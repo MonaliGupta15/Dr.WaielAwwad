@@ -124,16 +124,27 @@ export default function AboutSection() {
         portalEl.style.transform = 'none';
         portalEl.style.webkitTransform = 'none';
 
+        const zoom = parseFloat(document.documentElement.style.zoom) || 1;
         const rect = imgEl.getBoundingClientRect();
         const parentRect = pinRef.current.getBoundingClientRect();
 
-        const cx = rect.left - parentRect.left + rect.width / 2;
-        const cy = rect.top - parentRect.top + rect.height / 2;
-        const r = Math.min(rect.width, rect.height) / 2;
-        const rCover = Math.hypot(rect.width / 2, rect.height / 2);
+        const rectLeft = rect.left / zoom;
+        const rectTop = rect.top / zoom;
+        const rectWidth = rect.width / zoom;
+        const rectHeight = rect.height / zoom;
 
-        const vw = parentRect.width;
-        const vh = parentRect.height;
+        const parentRectLeft = parentRect.left / zoom;
+        const parentRectTop = parentRect.top / zoom;
+        const parentRectWidth = parentRect.width / zoom;
+        const parentRectHeight = parentRect.height / zoom;
+
+        const cx = rectLeft - parentRectLeft + rectWidth / 2;
+        const cy = rectTop - parentRectTop + rectHeight / 2;
+        const r = Math.min(rectWidth, rectHeight) / 2;
+        const rCover = Math.hypot(rectWidth / 2, rectHeight / 2);
+
+        const vw = parentRectWidth;
+        const vh = parentRectHeight;
         const maxR = Math.hypot(vw / 2, vh / 2); // Center of viewport
 
         // Restore original styling
@@ -692,7 +703,7 @@ export default function AboutSection() {
     <div ref={rootRef}>
       <section
         ref={pinRef}
-        className="relative w-full h-screen overflow-hidden bg-charcoal bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.06)_0%,rgba(18,20,19,1)_70%)] text-ivory select-none"
+        className="relative w-full section-h-screen overflow-hidden bg-charcoal bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.06)_0%,rgba(18,20,19,1)_70%)] text-ivory select-none"
       >
         <div className="absolute inset-0 z-[1] pointer-events-none opacity-[0.06] mix-blend-overlay bg-grain" />
 

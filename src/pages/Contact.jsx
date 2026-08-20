@@ -8,11 +8,34 @@ gsap.registerPlugin(ScrollTrigger);
 
 const LANGUAGES = ['English', 'Arabic', 'Hindi', 'French'];
 
+const COUNTRY_CODES = [
+  { code: '+91', iso: 'IN' },
+  { code: '+963', iso: 'SY' },
+  { code: '+1', iso: 'US' },
+  { code: '+44', iso: 'GB' },
+  { code: '+971', iso: 'AE' },
+  { code: '+966', iso: 'SA' },
+  { code: '+965', iso: 'KW' },
+  { code: '+961', iso: 'LB' },
+  { code: '+962', iso: 'JO' },
+  { code: '+20', iso: 'EG' },
+  { code: '+974', iso: 'QA' },
+  { code: '+968', iso: 'OM' },
+  { code: '+973', iso: 'BH' },
+  { code: '+49', iso: 'DE' },
+  { code: '+33', iso: 'FR' },
+  { code: '+61', iso: 'AU' },
+  { code: '+81', iso: 'JP' },
+  { code: '+65', iso: 'SG' },
+];
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
+    countryCode: '+91',
+    phone: '',
     message: '',
     website: '',
     topic: '',
@@ -22,6 +45,8 @@ export default function Contact() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
 
   const rootRef = useRef(null);
   const headingRef = useRef(null);
@@ -92,6 +117,15 @@ export default function Contact() {
     return () => ctx.revert();
   }, []);
 
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    setSubscribed(true);
+    setTimeout(() => {
+      setSubscribed(false);
+      setNewsletterEmail('');
+    }, 3000);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
@@ -101,6 +135,8 @@ export default function Contact() {
         firstName: '',
         lastName: '',
         email: '',
+        countryCode: '+91',
+        phone: '',
         message: '',
         website: '',
         topic: '',
@@ -117,9 +153,9 @@ export default function Contact() {
 
   const fieldWrap =
     'contact-field flex flex-col border-b border-charcoal/15 pb-2 focus-within:border-gold transition-colors duration-300';
-  const labelClass = 'font-mono text-[9px] uppercase tracking-[0.2em] text-stone mb-2';
+  const labelClass = 'font-mono text-[9px] uppercase tracking-[0.2em] text-charcoal/80 mb-2';
   const inputClass =
-    'bg-transparent border-none outline-none font-display text-lg text-charcoal placeholder-stone-gray/40 w-full';
+    'bg-transparent border-none outline-none font-display text-lg text-charcoal placeholder-stone-gray/70 w-full';
 
   return (
     <div ref={rootRef} className="bg-ivory min-h-screen text-charcoal flex flex-col justify-between pt-[14vh]">
@@ -155,7 +191,7 @@ export default function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className={fieldWrap}>
                     <label className="font-mono text-[9px] uppercase tracking-[0.2em] text-stone mb-2">
-                      First Name <span className="normal-case text-stone/60">(required)</span>
+                      First Name <span className="text-gold">*</span>
                     </label>
                     <input
                       type="text"
@@ -170,7 +206,7 @@ export default function Contact() {
 
                   <div className={fieldWrap}>
                     <label className="font-mono text-[9px] uppercase tracking-[0.2em] text-stone mb-2">
-                      Last Name <span className="normal-case text-stone/60">(required)</span>
+                      Last Name <span className="text-gold">*</span>
                     </label>
                     <input
                       type="text"
@@ -189,7 +225,7 @@ export default function Contact() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className={fieldWrap}>
                   <label className={labelClass}>
-                    Email <span className="normal-case text-stone/60">(required)</span>
+                    Email <span className="text-gold">*</span>
                   </label>
                   <input
                     type="email"
@@ -204,24 +240,44 @@ export default function Contact() {
 
                 <div className={fieldWrap}>
                   <label className={labelClass}>
-                    Phone Number <span className="normal-case text-stone/60">(required)</span>
+                    Phone Number <span className="text-gold">*</span>
                   </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    className={inputClass}
-                    placeholder="+91 00000 00000"
-                  />
+                  <div className="flex items-center w-full gap-2">
+                    <div className="relative flex-shrink-0 flex items-center">
+                      <select
+                        name="countryCode"
+                        value={formData.countryCode}
+                        onChange={handleChange}
+                        className="bg-transparent border-none outline-none font-display text-lg text-charcoal cursor-pointer appearance-none pr-5 py-0.5"
+                      >
+                        {COUNTRY_CODES.map((c) => (
+                          <option key={`${c.code}-${c.iso}`} value={c.code} className="text-charcoal bg-ivory font-sans text-sm">
+                            {c.iso} ({c.code})
+                          </option>
+                        ))}
+                      </select>
+                      <span className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-[8px] text-charcoal/40">▼</span>
+                    </div>
+
+                    <div className="w-px h-5 bg-charcoal/15 mx-1 flex-shrink-0" />
+
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                      className={inputClass}
+                      placeholder="00000 00000"
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Message */}
               <div className={fieldWrap}>
                 <label className={labelClass}>
-                  Message <span className="normal-case text-stone/60">(required)</span>
+                  Message <span className="text-gold">*</span>
                 </label>
                 <textarea
                   name="message"
@@ -250,7 +306,7 @@ export default function Contact() {
               {/* Proposed Topic or Theme */}
               <div className={fieldWrap}>
                 <label className={labelClass}>
-                  Proposed Topic or Theme <span className="normal-case text-stone/60">(required)</span>
+                  Proposed Topic or Theme <span className="text-gold">*</span>
                 </label>
                 <textarea
                   name="topic"
@@ -267,7 +323,7 @@ export default function Contact() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className={fieldWrap}>
                   <label className={labelClass}>
-                    Anticipated Date <span className="normal-case text-stone/60">(required)</span>
+                    Anticipated Date <span className="text-gold">*</span>
                   </label>
                   <input
                     type="date"
@@ -281,7 +337,7 @@ export default function Contact() {
 
                 <div className={fieldWrap}>
                   <label className={labelClass}>
-                    Language Required <span className="normal-case text-stone/60">(required)</span>
+                    Language Required <span className="text-gold">*</span>
                   </label>
                   <select
                     name="language"
@@ -387,6 +443,62 @@ export default function Contact() {
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Newsletter Signup Section */}
+        <div className="mt-24 pt-16 border-t border-charcoal/10 flex flex-col items-center text-center">
+          <p className="font-serif text-[15px] md:text-[18px] text-charcoal/80 max-w-[56ch] mb-6 leading-relaxed">
+            Sign up with your email address to receive news and updates from Dr. Waiel Awwad.
+          </p>
+          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 w-full max-w-[500px] mb-8 justify-center items-center">
+            <input
+              type="email"
+              required
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
+              placeholder="Email Address"
+              className="bg-white border border-charcoal/15 rounded-[4px] px-5 py-3.5 text-base text-charcoal placeholder-stone-gray/70 flex-grow outline-none focus:border-gold transition-colors font-sans w-full"
+            />
+            <button
+              type="submit"
+              className="bg-charcoal text-ivory font-mono text-[11px] uppercase tracking-[0.25em] px-9 py-4 rounded-full hover:bg-gold hover:text-charcoal transition-colors duration-300 shadow-sm flex-shrink-0 cursor-pointer w-full sm:w-auto"
+            >
+              {subscribed ? 'Subscribed' : 'Sign Up'}
+            </button>
+          </form>
+
+          {/* Social Icons */}
+          <div className="flex items-center gap-8 text-charcoal/70 mt-2">
+            <a
+              href="https://www.linkedin.com/in/dr-waiel-awwad-1a793b7/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-gold transition-colors duration-300 text-lg md:text-xl font-serif font-bold italic leading-none"
+              aria-label="LinkedIn"
+            >
+              in
+            </a>
+            <a
+              href="https://x.com/waielawwad"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-gold transition-colors duration-300 text-base md:text-[17px] font-sans font-extrabold leading-none"
+              aria-label="X (Twitter)"
+            >
+              X
+            </a>
+            <a
+              href="https://www.youtube.com/channel/UCr_dVn5TQtST7Oc_ixgDGsA/videos"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-gold transition-colors duration-300"
+              aria-label="YouTube"
+            >
+              <svg className="w-5.5 h-5.5 fill-current" viewBox="0 0 24 24">
+                <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.507a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.87.507 9.388.507 9.388.507s7.518 0 9.388-.507a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>

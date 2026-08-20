@@ -12,6 +12,7 @@ export default function MasterProfile() {
   const imageRef = useRef(null);
   const shadowRef = useRef(null);
   const markerRef = useRef(null);
+  const bracketsContainerRef = useRef(null);
   const bracketsContentRef = useRef(null);
   const num1979Ref = useRef(null);
   const num40Ref = useRef(null);
@@ -24,23 +25,39 @@ export default function MasterProfile() {
 
     const ctx = gsap.context(() => {
       // Bracket scroll-reveal animation
+      const containerEl = bracketsContainerRef.current;
       const contentEl = bracketsContentRef.current;
-      if (contentEl) {
-        // Start closed initially
+      if (containerEl && contentEl) {
+        // Start closed and hidden initially with negative margins to cancel out double flex-gap
+        gsap.set(containerEl, { width: 0, opacity: 0, marginLeft: -6, marginRight: -6 });
         gsap.set(contentEl, { width: 0, opacity: 0 });
 
         // Open quickly when scrolling down (pulling page up towards navbar),
         // reaching full width and opacity before the heading hits the navbar.
-        gsap.to(contentEl, {
-          width: 'auto',
-          opacity: 1,
-          ease: 'power1.out',
+        const tl = gsap.timeline({
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top top',
-            end: '+=60', // fully open within 60px of scroll (before hitting the navbar)
+            end: '+=80', // fully open within 80px of scroll
             scrub: 0.5,
           }
+        });
+
+        // 1. Reveal empty brackets () and animate margins to 0
+        tl.to(containerEl, {
+          opacity: 1,
+          width: 'auto',
+          marginLeft: 0,
+          marginRight: 0,
+          duration: 0.35,
+          ease: 'none',
+        })
+        // 2. Expand inner content to push brackets apart
+        .to(contentEl, {
+          width: 'auto',
+          opacity: 1,
+          duration: 0.65,
+          ease: 'power1.out',
         });
       }
 
@@ -221,9 +238,9 @@ export default function MasterProfile() {
 
         <div className="flex flex-col gap-6 items-start">
 
-          <h2 className="font-display font-normal text-[clamp(36px,7.5vw,110px)] leading-[0.95] tracking-[-0.03em] uppercase text-charcoal flex flex-nowrap items-center gap-x-3 gap-y-2 whitespace-nowrap mt-6">
+          <h2 className="font-display font-normal text-[clamp(36px,7.5vw,110px)] leading-[0.95] tracking-[-0.03em] uppercase text-charcoal flex flex-wrap items-center gap-x-3 gap-y-2 mt-6">
             <span>The Master</span>
-            <span className="inline-flex items-center text-gold select-none">
+            <span ref={bracketsContainerRef} className="inline-flex items-center text-gold select-none">
               <span className="font-serif font-light text-[1.15em] transform -translate-y-[0.04em]">(</span>
               <span
                 ref={bracketsContentRef}

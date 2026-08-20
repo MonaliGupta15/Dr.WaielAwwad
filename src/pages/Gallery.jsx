@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Footer from '../components/Footer';
 import img1 from '../assets/1.jpeg';
 import img2 from '../assets/2.jpeg';
@@ -77,6 +78,14 @@ const videoItems = [
 
 export default function Gallery() {
   const [activeTab, setActiveTab] = useState('photos');
+
+  // Refresh ScrollTrigger when the active tab changes to recalculate the footer's entry scroll positions
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [activeTab]);
 
   useEffect(() => {
     Fancybox.bind('[data-fancybox="gallery"]', {

@@ -132,9 +132,9 @@ const IntroductionSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen lg:h-screen lg:min-h-0 bg-ivory overflow-hidden px-[7vw] py-[12vh] lg:pt-[12vh] lg:pb-[6vh]"
+      className="relative section-min-h-screen lg:section-h-screen lg:min-h-0 bg-ivory overflow-hidden px-[7vw] py-[12vh] lg:pt-[12vh] lg:pb-[6vh]"
     >
-      <div className="grid min-h-screen lg:min-h-0 lg:h-full grid-cols-1 lg:grid-cols-2 items-center gap-[8vw]">
+      <div className="grid section-min-h-screen lg:min-h-0 lg:h-full grid-cols-1 lg:grid-cols-2 items-center lg:items-start lg:pt-[5vh] gap-[8vw]">
 
         {/* IMAGE */}
         <div className="relative order-2 lg:order-1">

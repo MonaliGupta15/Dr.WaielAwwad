@@ -78,6 +78,9 @@ export default function Footer() {
           }
         );
 
+        const zoom = parseFloat(document.documentElement.style.zoom) || 1;
+        const layoutWidth = window.innerWidth / zoom;
+
         // Measure exactly where "THE" sits (its natural, untransformed
         // position — before its own slide-in animation runs) and how far
         // left of that the portrait's resting box currently starts. That
@@ -86,10 +89,8 @@ export default function Footer() {
         // metrics — no guessed vw offsets. An extra push (EXTRA_LEFT_PUSH)
         // is added on top so the head starts visibly further left than
         // THE itself, not just flush with it — bump this up/down to taste.
-        const EXTRA_LEFT_PUSH = window.innerWidth * 0.12;
-        const theBox = lineTheRef.current.getBoundingClientRect();
-        const portraitBox = portraitRef.current.getBoundingClientRect();
-        const portraitStartX = theBox.left - portraitBox.left - EXTRA_LEFT_PUSH;
+        const EXTRA_LEFT_PUSH = layoutWidth * 0.12;
+        const portraitStartX = -layoutWidth;
 
         // Staircase alignment, done by direct position measurement rather
         // than summing letter widths (which drifts under negative tracking
@@ -97,18 +98,18 @@ export default function Footer() {
         // on-screen left edge and the MOVING letter's real on-screen left
         // edge, in their natural pre-transform layout, and the difference
         // is the exact px shift that line needs to land precisely.
-        const theFinalX = window.innerWidth * 0.04; // THE's own resting offset
+        const theFinalX = layoutWidth * 0.015; // THE's own resting offset
 
         // STORY: shift so "S" lands under THE's "H" (which itself will
         // sit theFinalX further right than it does right now)
-        const theH_naturalLeft = theSecondLetterRef.current.getBoundingClientRect().left;
-        const storyS_naturalLeft = storyFirstLetterRef.current.getBoundingClientRect().left;
+        const theH_naturalLeft = theSecondLetterRef.current.getBoundingClientRect().left / zoom;
+        const storyS_naturalLeft = storyFirstLetterRef.current.getBoundingClientRect().left / zoom;
         const storyFinalX = (theH_naturalLeft + theFinalX) - storyS_naturalLeft;
 
         // CONTINUES: shift so "C" lands under STORY's "T" (which itself
         // will sit storyFinalX further right than it does right now)
-        const storyT_naturalLeft = storySecondLetterRef.current.getBoundingClientRect().left;
-        const continuesC_naturalLeft = continuesFirstLetterRef.current.getBoundingClientRect().left;
+        const storyT_naturalLeft = storySecondLetterRef.current.getBoundingClientRect().left / zoom;
+        const continuesC_naturalLeft = continuesFirstLetterRef.current.getBoundingClientRect().left / zoom;
         const continuesFinalX = (storyT_naturalLeft + storyFinalX) - continuesC_naturalLeft;
 
         /* ---------------------------------------------------------
@@ -125,8 +126,8 @@ export default function Footer() {
           scrollTrigger: {
             trigger: footerRef.current,
             start: 'top bottom',
-            end: 'bottom center',
-            scrub: 2,
+            end: 'bottom bottom',
+            scrub: 1.5,
           },
         });
 
@@ -137,32 +138,32 @@ export default function Footer() {
         tl.fromTo(
           portraitRef.current,
           { x: portraitStartX, opacity: 0 },
-          { x: 0, opacity: 0.72, ease: 'sine.inOut' },
+          { x: 0, opacity: 0.72, ease: 'sine.inOut', duration: 1.0 },
           0
         );
 
-        // THE line: fades and slides in from the left, arriving at rest
+        // THE line: emerges from the left and follows the portrait
         tl.fromTo(
           lineTheRef.current,
-          { x: '-20vw', opacity: 0 },
-          { x: theFinalX, opacity: 1, ease: 'sine.inOut' },
-          0.05
+          { x: -layoutWidth * 0.5, opacity: 0 },
+          { x: theFinalX, opacity: 1, ease: 'sine.inOut', duration: 0.9 },
+          0.1
         );
 
         // STORY line: "S" lands directly under THE's "H"
         tl.fromTo(
           lineStoryRef.current,
-          { x: '-20vw', opacity: 0 },
-          { x: storyFinalX, opacity: 1, ease: 'sine.inOut' },
-          0.1
+          { x: -layoutWidth * 0.5, opacity: 0 },
+          { x: storyFinalX, opacity: 1, ease: 'sine.inOut', duration: 0.82 },
+          0.18
         );
 
         // CONTINUES line: "C" lands directly under STORY's "T"
         tl.fromTo(
           lineContinuesRef.current,
-          { x: '-20vw', opacity: 0 },
-          { x: continuesFinalX, opacity: 1, ease: 'sine.inOut' },
-          0.15
+          { x: -layoutWidth * 0.5, opacity: 0 },
+          { x: continuesFinalX, opacity: 1, ease: 'sine.inOut', duration: 0.75 },
+          0.25
         );
 
         // Slow editorial ticker — unchanged
@@ -201,11 +202,10 @@ export default function Footer() {
           any scroll position. */}
       <div
         ref={portraitRef}
-        className="absolute z-0
-          inset-y-0 right-[-4vw]
-          w-[50vw] md:w-[54vw]
+        className="absolute z-10
+          inset-y-0 right-[-3.5vw]
+          w-[55vw] md:w-[63vw]
           max-w-none
-          overflow-hidden
           pointer-events-none
           will-change-transform"
       >
@@ -231,7 +231,7 @@ export default function Footer() {
       </div>
 
       {/* Main editorial composition */}
-      <div className="relative z-10 min-h-screen px-[6vw] pt-[18vh] pb-12 flex flex-col justify-between">
+      <div className="relative min-h-screen px-[6vw] pt-[18vh] pb-12 flex flex-col justify-between">
         <div className="font-mono text-[9px] md:text-[11px] tracking-[0.28em] uppercase text-ivory/50">
           <span className="text-gold">ARCHIVE / 2026</span>
           <span className="mx-3">—</span>
@@ -239,27 +239,39 @@ export default function Footer() {
         </div>
 
         <div className="relative mt-[10vh] mb-[12vh]">
-          <div ref={titleRef} className="overflow-hidden">
+          <div ref={titleRef} className="overflow-hidden relative z-0">
             <div className="font-display uppercase font-normal leading-[0.76] tracking-[-0.055em]">
               <div ref={lineTheRef} className="text-[clamp(52px,10vw,140px)] will-change-transform">
-                <span ref={theFirstLetterRef} className="inline-block">T</span>
-                <span ref={theSecondLetterRef} className="inline-block">H</span>E
+                <span ref={theFirstLetterRef} className="inline-block char-the">T</span>
+                <span ref={theSecondLetterRef} className="inline-block char-the">H</span>
+                <span className="inline-block char-the">E</span>
               </div>
 
               <div ref={lineStoryRef} className="relative text-[clamp(52px,10vw,140px)] will-change-transform">
-                <span ref={storyFirstLetterRef} className="inline-block">S</span>
-                <span ref={storySecondLetterRef} className="inline-block">T</span>ORY
-                <span className="text-gold italic">.</span>
+                <span ref={storyFirstLetterRef} className="inline-block char-story">S</span>
+                <span ref={storySecondLetterRef} className="inline-block char-story">T</span>
+                <span className="inline-block char-story">O</span>
+                <span className="inline-block char-story">R</span>
+                <span className="inline-block char-story">Y</span>
+                <span className="text-gold italic inline-block char-story">.</span>
               </div>
 
               <div ref={lineContinuesRef} className="text-[clamp(52px,10vw,140px)] will-change-transform">
-                <span ref={continuesFirstLetterRef} className="inline-block">C</span>ONTINUES
-                <span className="text-gold">.</span>
+                <span ref={continuesFirstLetterRef} className="inline-block char-continues">C</span>
+                <span className="inline-block char-continues">O</span>
+                <span className="inline-block char-continues">N</span>
+                <span className="inline-block char-continues">T</span>
+                <span className="inline-block char-continues">I</span>
+                <span className="inline-block char-continues">N</span>
+                <span className="inline-block char-continues">U</span>
+                <span className="inline-block char-continues">E</span>
+                <span className="inline-block char-continues">S</span>
+                <span className="text-gold inline-block char-continues">.</span>
               </div>
             </div>
           </div>
 
-          <div className="absolute right-[3%] bottom-[-20px] max-w-[190px]">
+          <div className="absolute right-[3%] bottom-[-20px] max-w-[190px] z-20">
             <div className="w-8 h-px bg-gold mb-4" />
             <p className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] leading-[1.8] text-ivory/55">
               A life documented through journalism,
@@ -269,7 +281,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="relative grid grid-cols-1 md:grid-cols-4 border-t border-ivory/15">
+        <div className="relative z-20 grid grid-cols-1 md:grid-cols-4 border-t border-ivory/15">
           {[
             {
               label: 'Explore',
@@ -348,7 +360,7 @@ export default function Footer() {
 
         <div
           ref={metaRef}
-          className="mt-8 pt-5 border-t border-ivory/15 flex flex-col md:flex-row justify-between gap-4 font-mono text-[9px] tracking-[0.2em] uppercase text-ivory/40"
+          className="mt-8 pt-5 border-t border-ivory/15 flex flex-col md:flex-row justify-between gap-4 font-mono text-[9px] tracking-[0.2em] uppercase text-ivory/40 relative z-20"
         >
           <span>
             © 2026 Dr. Waiel Awwad. All Rights Reserved. Designed and Developed by{' '}

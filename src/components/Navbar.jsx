@@ -123,6 +123,29 @@ export default function Navbar() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
+  const handleLogoClick = (e) => {
+    if (window.location.pathname === '/') {
+      e.preventDefault();
+      if (window.lenis) {
+        window.lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  };
+
+  const handleMobileLogoClick = (e) => {
+    closeMenu();
+    if (window.location.pathname === '/') {
+      e.preventDefault();
+      if (window.lenis) {
+        window.lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <header
       className={`fixed left-1/2 z-50 w-full -translate-x-1/2 px-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? 'translate-y-0 opacity-100 scale-100' : '-translate-y-24 opacity-0 scale-95 pointer-events-none'}`}
@@ -133,7 +156,7 @@ export default function Navbar() {
         <nav
           aria-label="Primary"
           className={
-            'hidden lg:landscape:flex items-center justify-between rounded-full border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ' +
+            'hidden lg:flex items-center justify-between rounded-full border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ' +
             (isScrolled
               ? 'bg-charcoal/65 backdrop-blur-lg border-ivory/20 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.45)] py-3 px-6'
               : 'bg-charcoal/45 backdrop-blur-md border-ivory/15 shadow-none py-4 px-8')
@@ -148,7 +171,8 @@ export default function Navbar() {
           <NavLink
             to="/"
             end
-            className="mx-4 shrink-0 font-sans text-xs lg:landscape:text-sm font-bold tracking-[0.25em] text-white uppercase whitespace-nowrap hover:text-gold transition-colors duration-250"
+            onClick={handleLogoClick}
+            className="mx-4 shrink-0 font-sans text-xs lg:text-sm font-bold tracking-[0.25em] text-white uppercase whitespace-nowrap hover:text-gold transition-colors duration-250"
           >
             Dr. Waiel Awwad
           </NavLink>
@@ -161,7 +185,7 @@ export default function Navbar() {
         </nav>
 
         {/* ============ MOBILE PILL ============ */}
-        <div className="lg:landscape:hidden">
+        <div className="lg:hidden">
           <div
             className={
               'flex items-center justify-between rounded-full border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ' +
@@ -173,7 +197,7 @@ export default function Navbar() {
             <NavLink
               to="/"
               end
-              onClick={closeMenu}
+              onClick={handleMobileLogoClick}
               className="font-sans text-[11px] font-bold tracking-[0.2em] text-white uppercase whitespace-nowrap"
             >
               Dr. Waiel Awwad

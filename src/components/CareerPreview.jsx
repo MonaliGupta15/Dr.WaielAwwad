@@ -208,16 +208,23 @@ const CareerPreview = () => {
 
     // Calculate vertical position of the hovered row relative to the section
     if (sectionRef.current && rowRefs.current[index]) {
+      const zoom = parseFloat(document.documentElement.style.zoom) || 1;
       const sectionRect = sectionRef.current.getBoundingClientRect();
       const rowRect = rowRefs.current[index].getBoundingClientRect();
+      
+      const sectionHeight = sectionRect.height / zoom;
+      const rowTop = rowRect.top / zoom;
+      const sectionTop = sectionRect.top / zoom;
+      const rowHeight = rowRect.height / zoom;
+
       const cardHeight = imageWrapRef.current ? imageWrapRef.current.offsetHeight : 440;
-      const rowCenter = (rowRect.top - sectionRect.top) + (rowRect.height / 2);
+      const rowCenter = (rowTop - sectionTop) + (rowHeight / 2);
       
       let targetTop = rowCenter - (cardHeight / 2);
       
       // Constrain within section padding limits so it never gets cut off
       const minTop = 40;
-      const maxTop = sectionRect.height - cardHeight - 40;
+      const maxTop = sectionHeight - cardHeight - 40;
       
       const constrainedTop = Math.max(minTop, Math.min(targetTop, Math.max(minTop, maxTop)));
       setCardTop(constrainedTop);

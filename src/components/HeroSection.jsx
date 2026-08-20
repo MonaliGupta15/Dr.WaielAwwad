@@ -114,7 +114,7 @@ export default function HeroSection() {
     <div ref={rootRef}>
       <section
         ref={viewportRef}
-        className="relative w-full h-screen overflow-hidden bg-navy-abyss"
+        className="relative w-full section-h-screen overflow-hidden bg-navy-abyss"
       >
         {/* Layer 1 — background */}
         <div className="absolute inset-0 z-0 bg-hero-navy" />
