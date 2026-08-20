@@ -63,7 +63,7 @@ const galleryItems = [
 ];
 
 const videoItems = [
-  { id: 'HFapbt-KGuI', title: 'Live Discussion on Strategic Partnerships in West Asia', url: 'https://www.youtube.com/live/HFapbt-KGuI' },
+  { id: 'Jfxe2FnCZa8', title: 'International Media Forum: Foreign Correspondence in Warzones', url: 'https://www.youtube.com/watch?v=Jfxe2FnCZa8' },
   { id: 'dLTGoZkXeDg', title: 'Special Broadcast: Geopolitical Shift in the Indo-Pacific', url: 'https://www.youtube.com/watch?v=dLTGoZkXeDg' },
   { id: 'yYbMyCf0T3M', title: 'Interview: India\'s Role in a Multipolar World Order', url: 'https://www.youtube.com/watch?v=yYbMyCf0T3M' },
   { id: 'lMbkMZUxPqI', title: 'Strategic Dialogue: Conflict Resolution and International Law', url: 'https://www.youtube.com/watch?v=lMbkMZUxPqI' },
@@ -72,7 +72,6 @@ const videoItems = [
   { id: 'gPDe-QlnTBw', title: 'Live Conclave: Fostering Diplomacy and Cultural Bonds', url: 'https://www.youtube.com/live/gPDe-QlnTBw' },
   { id: 'ScX3zvZs9PM', title: 'Geopolitical Analysis: De-escalation Strategies in Regional Wars', url: 'https://www.youtube.com/watch?v=ScX3zvZs9PM' },
   { id: 'V_JIZD2MjLg', title: 'Bilateral Relations: Dynamics of Indo-Arab Commerce', url: 'https://www.youtube.com/watch?v=V_JIZD2MjLg' },
-  { id: 'Jfxe2FnCZa8', title: 'International Media Forum: Foreign Correspondence in Warzones', url: 'https://www.youtube.com/watch?v=Jfxe2FnCZa8' },
   { id: 'oHEW6YxQjJE', title: 'Strategic Insight: Counter-Terrorism Operations and Global Security', url: 'https://www.youtube.com/watch?v=oHEW6YxQjJE' },
 ];
 

@@ -634,6 +634,10 @@ export default function AboutSection() {
           0.98
         );
       }
+
+      // Sort and refresh triggers to account for the async pinned spacing
+      ScrollTrigger.sort();
+      ScrollTrigger.refresh();
     }, rootRef);
 
     return () => ctx.revert();
