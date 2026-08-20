@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Outfit", sans-serif;
+  /* New: hero-only display/mono pairing (distinct from the site's
+     Cormorant/Outfit pairing, used just for the WAIEL/AWWAD headline
+     treatment and the mono labels in the hero). */
+  --font-display: "Fraunces", serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --color-ivory: #FAF8F5;
+  --color-charcoal: #121413;
+  --color-stone-gray: #7B7873;
+  --color-forest: #1A3225;
+  --color-gold: #C5A880;
+
+  /* New: tokens the hero component needs that didn't exist in the
+     site's base palette yet. */
+  --color-cream: #F3EEE2;
+  --color-stone: #8C8371;
+  --color-stone-light: #B9B0A0;
+  --color-green: #2E4A3B;
+  --color-navy-dark: #14181C;
+  --color-navy-glow: #23405F;
+  --color-navy-abyss: #05070A;
+
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-scroll-pulse: scroll-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes scroll-pulse {
+  0% { top: -100%; }
+  60% { top: 100%; }
+  100% { top: 100%; }
+}
+
+:root {
+  background-color: var(--color-ivory);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background-color: var(--color-ivory);
+  color: var(--color-charcoal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ivory);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-forest);
+}
+
+/* Base resets & utilities */
+html {
+  scroll-behavior: smooth;
+}
+
+/* GSAP pin spacer adjustment to prevent sudden shifts */
+.pin-spacer {
+  background-color: transparent !important;
+}
+
+/* Subtle film-grain texture used behind the hero */
+.bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Radial gradient used behind the hero — echoes the portrait's own
+   navy-to-black backdrop so the photo has no visible seam. */
+.bg-hero-navy {
+  background-image: radial-gradient(
+    ellipse 85% 65% at 68% 45%,
+    var(--color-navy-glow) 0%,
+    var(--color-navy-dark) 55%,
+    var(--color-navy-abyss) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .will-change-transform {
+    transition: none !important;
+  }
+}
+
+/* Lenis smooth scrolling rules */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+
+/* Hide the two outermost rings on small screens to reduce visual
+   clutter, per the mobile requirement of showing fewer rings at once
+   while keeping the concentric concept. */
+@media (max-width: 1023px) {
+  .about-ring-mobile-hide {
+    display: none;
+  }
+}
+
+/* Utility to hide scrollbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

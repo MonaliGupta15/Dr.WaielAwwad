@@ -1,0 +1,56 @@
+:root {
+  --vh: 1vh;
+  --color-ivory: #F3EEE2;
+  --color-ivory-deep: #E9E0CB;
+  --color-charcoal: #201D18;
+  --color-stone: #8C8371;
+  --color-green: #2E4A3B;
+  --color-gold: #B58B3E;
+  --color-navy-dark: #14181C;
+  --color-cream-text: #F3EEE2;
+  --color-navy-glow: #23405F;
+  --color-navy-abyss: #05070A;
+}
+
+::selection {
+  background: var(--color-green);
+  color: var(--color-ivory);
+}
+
+.bg-hero-navy {
+  background-image: radial-gradient(
+    ellipse 85% 65% at 68% 45%,
+    var(--color-navy-glow) 0%,
+    var(--color-navy-dark) 55%,
+    var(--color-navy-abyss) 100%
+  );
+}
+
+.bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Portrait fused into the navy backdrop via true duotone:
+   - the SVG #duotone-navy-gold filter (defined inline in the JSX)
+     maps shadows to navy-abyss and highlights to gold
+   - mix-blend-mode: screen means the navy shadow values combine with
+     the navy background and stay dark/matching (they visually
+     disappear), while gold highlights punch through
+   - the two-axis mask fades all four edges to transparent, so there
+     is no rectangular silhouette on any side */
+.hero-portrait {
+  filter: grayscale(0.85) contrast(1.08) brightness(0.92);
+  mix-blend-mode: screen;
+}
+
+.hero-portrait-grade {
+  background: rgba(35, 64, 95, 0.28);
+  mix-blend-mode: color;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .will-change-transform {
+    transition: none !important;
+  }
+}
