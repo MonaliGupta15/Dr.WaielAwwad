@@ -271,7 +271,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="absolute right-[3%] bottom-[-20px] max-w-[190px] z-20">
+          <div className="absolute right-[1.5vw] bottom-[30px] max-w-[170px] z-20">
             <div className="w-8 h-px bg-gold mb-4" />
             <p className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] leading-[1.8] text-ivory/55">
               A life documented through journalism,

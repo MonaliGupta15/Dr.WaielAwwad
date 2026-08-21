@@ -198,10 +198,12 @@ export default function AboutSection() {
               if (activeIndex >= 2 && activeIndex < 9) {
                 const chapter = CHAPTERS[activeIndex - 2];
                 progressLabelRef.current.textContent = `${chapter.number} / 07 — ${chapter.label}`;
+                progressLabelRef.current.style.opacity = '1';
               } else if (activeIndex >= 9) {
-                progressLabelRef.current.textContent = 'THE JOURNEY CONTINUES';
+                progressLabelRef.current.style.opacity = '0';
               } else {
                 progressLabelRef.current.textContent = 'THE LAYERS OF A LIFE';
+                progressLabelRef.current.style.opacity = '1';
               }
             }
           },
@@ -688,7 +690,7 @@ export default function AboutSection() {
           ))}
           <div className="max-w-[60ch] border-l border-gold pl-6 pt-6">
             <h2 className="font-display text-[clamp(32px,5vw,56px)] leading-[1] text-ivory uppercase mb-4">
-              THE STORY CONTINUES
+              SO THE JOURNEY GOES ON
             </h2>
             <p className="text-ivory/60 font-mono text-xs">
               From witnessing events to understanding the forces behind them.
@@ -709,7 +711,7 @@ export default function AboutSection() {
 
         {/* Floating progress headers */}
         <div className="absolute top-[6%] left-1/2 -translate-x-1/2 z-[30] text-center pointer-events-none">
-          <p ref={progressLabelRef} className="font-mono text-[10px] tracking-[0.22em] uppercase text-ivory/65">
+          <p ref={progressLabelRef} className="font-mono text-[10px] tracking-[0.22em] uppercase text-ivory/65 transition-opacity duration-300">
             01 / 07 — ORIGIN
           </p>
         </div>
@@ -885,9 +887,9 @@ export default function AboutSection() {
               ref={finalHeadingRef}
               className="font-display font-normal text-[clamp(44px,7.5vw,115px)] leading-[0.9] tracking-[-0.04em] uppercase text-ivory mb-6"
             >
-              THE STORY
+              SO THE JOURNEY
               <br />
-              CONTINUES<span ref={finalDotRef} className="text-gold">.</span>
+              GOES ON<span ref={finalDotRef} className="text-gold">.</span>
             </h2>
             <p
               ref={finalQuoteRef}

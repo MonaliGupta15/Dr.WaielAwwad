@@ -20,7 +20,7 @@ const App = () => {
       const referenceWidth = 1440;
 
       let scale = 1;
-      if (width < referenceWidth) {
+      if (width >= 1024 && width < referenceWidth) {
         scale = width / referenceWidth;
         document.documentElement.style.zoom = scale;
       } else {

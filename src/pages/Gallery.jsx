@@ -3,7 +3,7 @@ import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Footer from '../components/Footer';
-import img1 from '../assets/1.jpeg';
+import img1 from '../assets/33.jpg';
 import img2 from '../assets/2.jpeg';
 import img3 from '../assets/3.jpg';
 import img4 from '../assets/4.jpeg';
@@ -64,20 +64,29 @@ const galleryItems = [
 ];
 
 const videoItems = [
-  { id: 'Jfxe2FnCZa8', title: 'International Media Forum: Foreign Correspondence in Warzones', url: 'https://www.youtube.com/watch?v=Jfxe2FnCZa8' },
-  { id: 'dLTGoZkXeDg', title: 'Special Broadcast: Geopolitical Shift in the Indo-Pacific', url: 'https://www.youtube.com/watch?v=dLTGoZkXeDg' },
-  { id: 'yYbMyCf0T3M', title: 'Interview: India\'s Role in a Multipolar World Order', url: 'https://www.youtube.com/watch?v=yYbMyCf0T3M' },
-  { id: 'lMbkMZUxPqI', title: 'Strategic Dialogue: Conflict Resolution and International Law', url: 'https://www.youtube.com/watch?v=lMbkMZUxPqI' },
-  { id: 'msAWXLOR44Y', title: 'Global Press Conclave: Ethical Challenges in Conflict Reporting', url: 'https://www.youtube.com/watch?v=msAWXLOR44Y' },
-  { id: 'kXhR9ePirZA', title: 'Middle East Briefing: Security Concerns and Rising Tensions', url: 'https://www.youtube.com/watch?v=kXhR9ePirZA' },
-  { id: 'gPDe-QlnTBw', title: 'Live Conclave: Fostering Diplomacy and Cultural Bonds', url: 'https://www.youtube.com/live/gPDe-QlnTBw' },
-  { id: 'ScX3zvZs9PM', title: 'Geopolitical Analysis: De-escalation Strategies in Regional Wars', url: 'https://www.youtube.com/watch?v=ScX3zvZs9PM' },
-  { id: 'V_JIZD2MjLg', title: 'Bilateral Relations: Dynamics of Indo-Arab Commerce', url: 'https://www.youtube.com/watch?v=V_JIZD2MjLg' },
-  { id: 'oHEW6YxQjJE', title: 'Strategic Insight: Counter-Terrorism Operations and Global Security', url: 'https://www.youtube.com/watch?v=oHEW6YxQjJE' },
+  { id: 'Jfxe2FnCZa8', title: 'West Asia Strategist Dr. Waiel Awwad on Geopolitical Impact of Israel-Iran War on India | ANI Bharat', url: 'https://www.youtube.com/watch?v=Jfxe2FnCZa8' },
+  { id: 'dLTGoZkXeDg', title: '\'Syria Faces Loss Of Sovereignty, Could Even Disintegrate\' | StratNewsGlobal', url: 'https://www.youtube.com/watch?v=dLTGoZkXeDg' },
+  { id: 'QwRkji1ITSo', title: '\'Only Way For USA To Win Now Is To Drop Nuclear Dirty Bomb On Iran...\': Dr. Waiel Awwad | Hindustan Times', url: 'https://www.youtube.com/watch?v=QwRkji1ITSo' },
+  { id: 'yYbMyCf0T3M', title: 'The Silent Chinese War & Latin Mafias: Geopolitical Discussion with Dr. Waiel Awwad | Al Mashhad', url: 'https://www.youtube.com/watch?v=yYbMyCf0T3M' },
+  { id: 'lMbkMZUxPqI', title: 'Why Do Temples Ignite Wars Between Neighbors? | France 24 Arabic', url: 'https://www.youtube.com/watch?v=lMbkMZUxPqI' },
+  { id: 'zAM8DhiBLbM', title: '\'Taliban Back In Power With Golden Platter From US\': Dr. Waiel Awwad | Republic World', url: 'https://www.youtube.com/watch?v=zAM8DhiBLbM' },
+  { id: 'kXhR9ePirZA', title: 'Trump Meets Syria’s Al-Sharaa In Historic Encounter | NewsX World', url: 'https://www.youtube.com/watch?v=kXhR9ePirZA' },
+  { id: 'ScX3zvZs9PM', title: '‘Gaza War Will Continue; East Jerusalem Main Target’: Saeed Naqvi, Dr Waiel Awwad, John Cherian | The Wire', url: 'https://www.youtube.com/watch?v=ScX3zvZs9PM' },
+  { id: 'V_JIZD2MjLg', title: 'Trump Secures Historic $600B Saudi Deal, Lifts Syria Sanctions | NewsX World', url: 'https://www.youtube.com/watch?v=V_JIZD2MjLg' },
+  { id: 'oHEW6YxQjJE', title: 'The Nuclear Race: Can U.S Stop Iran and Saudi Going Nuclear? | The New Indian Express', url: 'https://www.youtube.com/watch?v=oHEW6YxQjJE' },
+  { id: 'yjfVO6VJpw0', title: 'Putin and Macron Discuss Iran Nuclear Tensions, Call for UN Action | NewsX World', url: 'https://www.youtube.com/watch?v=yjfVO6VJpw0' },
+  { id: 'xXekvuJ7_fA', title: '\'Epstein & Mossad Link Behind Trump\'s Iran War Push\': Dr. Waiel Awwad | Hindustan Times', url: 'https://www.youtube.com/watch?v=xXekvuJ7_fA' },
+  { id: '5_6nYbG9qGA', title: 'Khamenei Killed In US-Israel Attack: Dr. Waiel Awwad on Trump\'s Real Target | Hindustan Times', url: 'https://www.youtube.com/watch?v=5_6nYbG9qGA' }
 ];
 
 export default function Gallery() {
   const [activeTab, setActiveTab] = useState('photos');
+  const [playingVideoId, setPlayingVideoId] = useState(null);
+
+  // Reset playing video when activeTab changes
+  useEffect(() => {
+    setPlayingVideoId(null);
+  }, [activeTab]);
 
   // Refresh ScrollTrigger when the active tab changes to recalculate the footer's entry scroll positions
   useEffect(() => {
@@ -176,36 +185,49 @@ export default function Gallery() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-            {videoItems.map((item, index) => (
-              <div 
-                key={index} 
-                className="group bg-white rounded-[20px] p-5 border border-black/[0.05] shadow-[0_4px_15px_rgba(0,0,0,0.05)] transition-all duration-400 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] hover:-translate-y-2.5 hover:shadow-[0_15px_35px_rgba(0,0,0,0.12)] flex flex-col"
-              >
-                <a 
-                  href={item.url}
-                  data-fancybox="gallery"
-                  data-caption={item.title}
-                  className="relative aspect-video w-full overflow-hidden rounded-[16px] bg-stone-light/10 mb-4 block cursor-pointer"
+            {videoItems.map((item, index) => {
+              const isPlaying = playingVideoId === item.id;
+              return (
+                <div 
+                  key={index} 
+                  className="group bg-white rounded-[20px] p-5 border border-black/[0.05] shadow-[0_4px_15px_rgba(0,0,0,0.05)] transition-all duration-400 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] hover:-translate-y-2.5 hover:shadow-[0_15px_35px_rgba(0,0,0,0.12)] flex flex-col"
                 >
-                  <img
-                    src={`https://img.youtube.com/vi/${item.id}/hqdefault.jpg`}
-                    alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-600 ease-in-out group-hover:scale-108"
-                  />
-                  {/* Play Button Overlay */}
-                  <div className="absolute inset-0 bg-charcoal/20 flex items-center justify-center transition-colors group-hover:bg-charcoal/40">
-                    <div className="w-12 h-12 rounded-full bg-white/95 text-[#0b2e59] flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
-                      <svg className="w-5 h-5 fill-current ml-1" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
+                  {isPlaying ? (
+                    <div className="relative aspect-video w-full overflow-hidden rounded-[16px] bg-black mb-4">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${item.id}?autoplay=1&rel=0`}
+                        title={item.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="absolute inset-0 w-full h-full border-0"
+                      />
                     </div>
-                  </div>
-                </a>
-                <h3 className="font-sans text-center text-[#0b2e59] text-[1.1rem] font-semibold mt-2 mb-1 line-clamp-2">
-                  {item.title}
-                </h3>
-              </div>
-            ))}
+                  ) : (
+                    <button 
+                      onClick={() => setPlayingVideoId(item.id)}
+                      className="relative aspect-video w-full overflow-hidden rounded-[16px] bg-stone-light/10 mb-4 block cursor-pointer text-left w-full border-0 p-0"
+                    >
+                      <img
+                        src={`https://img.youtube.com/vi/${item.id}/hqdefault.jpg`}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform duration-600 ease-in-out group-hover:scale-108"
+                      />
+                      {/* Play Button Overlay */}
+                      <div className="absolute inset-0 bg-charcoal/20 flex items-center justify-center transition-colors group-hover:bg-charcoal/40">
+                        <div className="w-12 h-12 rounded-full bg-white/95 text-[#0b2e59] flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
+                          <svg className="w-5 h-5 fill-current ml-1" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </button>
+                  )}
+                  <h3 className="font-sans text-center text-[#0b2e59] text-[1.1rem] font-semibold mt-2 mb-1 line-clamp-2">
+                    {item.title}
+                  </h3>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

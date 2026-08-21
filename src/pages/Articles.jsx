@@ -1,25 +1,41 @@
 import React from 'react';
 import Footer from '../components/Footer';
-import img16 from '../assets/16.webp';
 import img32 from '../assets/32.png';
-import img31 from '../assets/31.jpeg';
-import img13 from '../assets/13.webp';
-import img28 from '../assets/28.jpeg';
-import img9 from '../assets/9.jpeg';
-import img25 from '../assets/25.jpeg';
-import img8 from '../assets/8.jfif';
-import img12 from '../assets/12.jpeg';
-import cameraImg from '../assets/camera.webp';
 import img14 from '../assets/14.webp';
 import img11 from '../assets/11.jpeg';
-import img4 from '../assets/4.jpeg';
-import img20 from '../assets/20.jpeg';
-import img21 from '../assets/21.jpeg';
-import img27 from '../assets/27.jpeg';
-import img29 from '../assets/29.jpeg';
 import profilePortrait from '../assets/Waiel S.H. Awwad.webp';
 
+// Authentically scraped and downloaded lead article images
+import article1 from '../assets/article_1.jpg';
+import article3 from '../assets/article_3.jpg';
+import article4 from '../assets/article_4.jpg';
+import article5 from '../assets/article_5.png';
+import article7 from '../assets/article_7.jpg';
+import article10 from '../assets/article_10.webp';
+import article14 from '../assets/article_14.jpg';
+import article15 from '../assets/article_15.jpg';
+import articleNew1 from '../assets/article_new_1.jpeg';
+import articleNew2 from '../assets/article_new_2.jpg';
+
 const articles = [
+  {
+    title: 'When dust settles on the shadow war waged in Iran',
+    publication: 'The New Indian Express',
+    date: 'January 2026',
+    excerpt: 'Analyzing the strategic shadow war waged in Iran, its domestic power struggles, external geopolitical pressures, and the potential energy and economic consequences for India.',
+    readTime: '8 min read',
+    url: 'https://www.newindianexpress.com/opinions/2026/jan/16/when-dust-settles-on-the-shadow-war-waged-in-iran',
+    image: articleNew1,
+  },
+  {
+    title: 'Revival of \'good terrorism\': How Syria became the battleground for global hypocrisy',
+    publication: 'The New Indian Express',
+    date: 'December 2024',
+    excerpt: 'A critical examination of the fall of the Assad regime in Syria and the geopolitical exploitation of extremist groups as covert strategic instruments by global powers.',
+    readTime: '7 min read',
+    url: 'https://www.newindianexpress.com/opinions/2024/dec/08/revival-of-good-terrorism-how-syria-became-the-battleground-for-global-hypocrisy',
+    image: articleNew2,
+  },
   {
     title: 'Trump is prolonging Iran war to appease his billionaire associates, fulfill Israel\'s agenda: Middle East expert Waiel Awwad',
     publication: 'ANI News',
@@ -27,7 +43,7 @@ const articles = [
     excerpt: 'Analyzing US foreign policy, Middle East expert Dr. Waiel Awwad argues that military escalations against Iran are fueled by strategic business associations and regional agendas.',
     readTime: '8 min read',
     url: 'https://www.aninews.in/news/world/asia/trump-is-prolonging-iran-war-to-appease-his-billionaire-associates-fulfill-israels-agenda-middle-east-expert-waiel-awwad20260330141725/',
-    image: img16,
+    image: article1,
   },
   {
     title: 'Syrian-born Waiel Awwad elected President of Foreign Correspondents’ Club of South Asia',
@@ -45,7 +61,7 @@ const articles = [
     excerpt: 'A critical analysis of the escalating conflict, warning of the extreme strategic deadlocks and predictions facing global military involvement in West Asia.',
     readTime: '6 min read',
     url: 'https://www.hindustantimes.com/videos/world-news/only-way-for-usa-to-win-now-is-to-drop-nuclear-dirty-bomb-on-iran-waiel-awwads-scary-prediction-101782995523066.html',
-    image: img31,
+    image: article3,
   },
   {
     title: 'Why not attack North Korea which has nukes? Waiel Awwad demolishes Trump\'s Iran war justification',
@@ -54,7 +70,7 @@ const articles = [
     excerpt: 'Deconstructing foreign policy justifications, comparing international strategic postures, and challenging military rationales in the Middle East.',
     readTime: '7 min read',
     url: 'https://www.hindustantimes.com/videos/world-news/why-not-attack-north-korea-which-has-nukes-waiel-awwad-demolishes-trump-s-iran-war-justification-101773145488983.html',
-    image: img13,
+    image: article4,
   },
   {
     title: 'Death of President Ebrahim Raisi: Iran at a crossroads',
@@ -63,16 +79,7 @@ const articles = [
     excerpt: 'An in-depth analysis on the sudden demise of Iranian President Ebrahim Raisi, exploring the implications on domestic power structures and the shifting balance of power in West Asia.',
     readTime: '8 min read',
     url: 'https://organiser.org/2024/05/25/239423/international/death-of-president-ebrahim-raisi-iran-at-a-crossroads/',
-    image: img28,
-  },
-  {
-    title: "Navigating Geopolitics: India's Growing Influence in West Asia",
-    publication: 'MSN / Tillotoma Foundation',
-    date: 'April 2024',
-    excerpt: "A comprehensive look at India's strategic foreign policy, trade agreements, and its expanding political and economic partnerships with the Gulf and Arab nations.",
-    readTime: '10 min read',
-    url: 'https://www.msn.com/en-in/news/India/navigating-geopolitics-indias-growing-influence-in-west-asia-dr-waiel-awwad/vi-AA1sIANQ#details',
-    image: img9,
+    image: article5,
   },
   {
     title: 'Red Lines Crossed: A Region on the Brink',
@@ -81,25 +88,7 @@ const articles = [
     excerpt: 'Analyzing the geopolitical fallout of recent military developments, strategic red lines, and the security environment facing key powers across the West Asian region.',
     readTime: '9 min read',
     url: 'https://www.newindianexpress.com/nation/2025/Jun/24/red-lines-crossed-a-region-on-the-brink',
-    image: img25,
-  },
-  {
-    title: "Lord Buddha's Smile: Fostering India-China Relations",
-    publication: 'Rai Al Youm',
-    date: 'November 2023',
-    excerpt: 'Exploring the potential of shared cultural heritage, Buddhism, and civilizational diplomacy as a bridge to normalize and de-escalate tensions between India and China.',
-    readTime: '7 min read',
-    url: 'https://www.raialyoum.com/%d8%a7%d8%a8%d8%aa%d8%b3%d8%a7%d9%85%d8%a9-%d8%a7%d9%84%d9%84%d9%88%d8%b1%d8%af-%d8%a8%d9%88%d8%b0%d8%a7-%d8%ac%d8%b3%d8%b1-%d8%a7%d9%84%d8%b3%d9%84%d8%a7%d9%85-%d9%84%d8%a5%d8%b9%d8%a7%d8%af/',
-    image: img8,
-  },
-  {
-    title: 'India between USA and Russia: A Delicate Diplomatic Balance',
-    publication: 'Rai Al Youm',
-    date: 'September 2023',
-    excerpt: "Examining India's strategic autonomy and foreign policy navigation, maintaining historical defense relations with Russia while building new security ties with the United States.",
-    readTime: '11 min read',
-    url: 'https://www.raialyoum.com/%d8%a3%d9%85%d9%8a%d8%b1%d9%83%d8%a7-%d8%aa%d8%b6%d8%ba%d8%b7-%d9%88%d9%86%d9%8a%d9%88%d8%af%d9%84%d9%87%d9%8a-%d8%aa%d8%aa%d8%b1%d9%91%d8%ab-%d8%a7%d9%84%d9%87%d9%86%d8%af-%d8%a8%d9%8a%d9%86/',
-    image: img12,
+    image: article7,
   },
   {
     title: 'Solidarity in Journalism: A Tribute to Frontline Reporters in Gaza',
@@ -108,7 +97,7 @@ const articles = [
     excerpt: 'A heartfelt tribute to the journalists and media personnel who lost their lives in conflict zones, documenting the immense risks and ethical boundaries of frontline reporting.',
     readTime: '6 min read',
     url: 'https://www.newindianexpress.com/web-only/2024/Nov/29/on-the-intl-day-of-solidarity-with-the-palestinian-people-a-tribute-to-the-journalists-killed-in-gaza',
-    image: cameraImg,
+    image: article10,
   },
   {
     title: 'The Temple of Preah Vihear: Analyzing the Cambodia-Thailand Border Dispute',
@@ -120,31 +109,13 @@ const articles = [
     image: img14,
   },
   {
-    title: 'Beyond Borders: Indo-Arab Chamber fuels economic and cultural revival',
-    publication: 'The Daily Pioneer',
-    date: 'June 2025',
-    excerpt: 'Fostering bilateral trade, investment channels, and cultural exchange programs between India and Arab nations through chambers of commerce.',
-    readTime: '7 min read',
-    url: 'https://www.dailypioneer.com/2025/business/beyond-borders--indo-arab-chamber-fuels-economic-and-cultural-revival.html',
-    image: img4,
-  },
-  {
-    title: 'India taking lead in making sure a multipolar world should be born: West Asia strategist Waiel Awwad',
-    publication: 'India Narrative',
-    date: 'December 2023',
-    excerpt: 'An interview exploring India\'s active role in shaping a multipolar world order, civilizational diplomacy, and geopolitical balancing in West Asia.',
-    readTime: '6 min read',
-    url: 'https://www.indianarrative.com/india-news/india-taking-lead-in-making-sure-a-multipolar-world-should-be-born-west-asia-strategist-waiel-awwad-163330.html',
-    image: img29,
-  },
-  {
     title: 'Israel\'s escalating war on Gaza and Lebanon: A humanitarian crisis unfolds',
     publication: 'Financial Express',
     date: 'September 2024',
     excerpt: 'A critical review of the worsening humanitarian situation, assessing international law, military strategies, and the geopolitical fallout of the escalating conflict.',
     readTime: '8 min read',
     url: 'https://www.financialexpress.com/opinion/israels-escalating-war-on-gaza-and-lebanon-a-humanitarian-crisis-unfolds/3626001/',
-    image: img20,
+    image: article14,
   },
   {
     title: 'The legally killed children of Palestine: Who is Israel at war with?',
@@ -153,16 +124,7 @@ const articles = [
     excerpt: 'Challenging the moral and legal justifications of modern conflicts, analyzing civilian casualties, and the long-term impact on regional peace and human rights.',
     readTime: '9 min read',
     url: 'https://www.newindianexpress.com/world/2024/Oct/09/the-legally-killed-children-of-palestine-who-is-israel-at-war-with',
-    image: img21,
-  },
-  {
-    title: 'Diplomatic Tension between India and Canada: A Strategic Perspective',
-    publication: 'Rai Al Youm',
-    date: 'October 2023',
-    excerpt: 'An analysis of the diplomatic friction between India and Canada, examining geopolitical interests, international alliances, and the strategic implications of the dispute.',
-    readTime: '7 min read',
-    url: 'https://www.raialyoum.com/%d8%a7%d9%84%d8%aa%d9%88%d8%aa%d8%b1-%d8%a7%d9%84%d8%af%d8%a8%d9%84%d9%88%d9%85%d8%a7%d8%b3%d9%8a-%d8%a8%d9%8a%d9%86-%d8%a7%d9%84%d9%87%d9%86%d8%af-%d9%8a%d9%8a%d9%88%d8%af%d9%84%d9%87%d9%8a-%d8%aa%d8%aa%d8%b1/',
-    image: img27,
+    image: article15,
   },
   {
     title: 'Strategic Partnerships: Analyzing the US-India SOSA and MQ-9B Deals',
@@ -170,6 +132,7 @@ const articles = [
     date: 'June 2023',
     excerpt: "Detailing the implications of the Security of Military Supplies Agreement (SOSA) and the procurement of MQ-9B aircraft on India's defense readiness and Indo-Pacific security.",
     readTime: '8 min read',
+    url: 'https://www.raialyoum.com/%d9%81%d9%88%d8%b2-%d8%aa%d8%b1%d8%a7%d9%85%d8%a8-%d9%85%d8%b1%d8%a9-%d8%a3%d8%ae%d8%b1%d9%89-%d9%87%d9%84-%d8%aa%d8%b9%d8%b2%d8%b2-%d8%a7%d9%84%d9%87%d9%86%d8%af-%d9%85%d9%83%d8%a7%d9%86%d8%aa%d9%87/',
     image: img11,
   },
 ];

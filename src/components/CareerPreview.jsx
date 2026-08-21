@@ -241,6 +241,9 @@ const CareerPreview = () => {
           0.3
         );
     } else {
+      // Force curtain to -100 if it was interrupted during rapid hover switching
+      gsap.to(curtainRef.current, { yPercent: -100, duration: 0.3, ease: 'power2.out' });
+
       tl.to([metaCategoryRef.current, metaPeriodRef.current], { opacity: 0, y: -6, duration: 0.2 }, 0)
         .call(() => setActiveRole(index))
         .fromTo(
@@ -252,7 +255,11 @@ const CareerPreview = () => {
     }
   };
 
-  const hideRole = () => setActiveRole(null);
+  const hideRole = () => {
+    setActiveRole(null);
+    imageTlRef.current?.kill();
+    gsap.set(curtainRef.current, { yPercent: 0 });
+  };
 
   return (
     <section
