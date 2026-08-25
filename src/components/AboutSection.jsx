@@ -12,7 +12,7 @@ import leadershipImg from '../assets/conference.jpg';
 import strategistImg from '../assets/podium.jpg';
 import finalImg from '../assets/3.jpg';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(Bb);
 
 const CHAPTERS = [
   {

@@ -35,14 +35,17 @@ const App = () => {
         scale = width / referenceWidth;
         document.documentElement.style.zoom = scale;
         document.documentElement.style.setProperty('--zoom-scale', scale);
+        if (rootEl) {
+          rootEl.style.zoom = scale;
+          rootEl.style.width = `${100 / scale}%`;
+        }
       } else {
         document.documentElement.style.zoom = '1';
         document.documentElement.style.setProperty('--zoom-scale', '1');
-      }
-
-      if (rootEl) {
-        rootEl.style.zoom = '';
-        rootEl.style.width = '100%';
+        if (rootEl) {
+          rootEl.style.zoom = '';
+          rootEl.style.width = '';
+        }
       }
 
       // Calculate layout height of the viewport

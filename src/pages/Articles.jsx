@@ -142,7 +142,7 @@ export default function Articles() {
     <div className="bg-ivory min-h-screen text-charcoal flex flex-col justify-between pt-[14vh]">
       <div className="max-w-[1400px] mx-auto self-center px-[6vw] w-full mb-24">
         {/* Page Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 lg:mb-24 border-b border-charcoal/10 pb-12 lg:pb-16">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-8 mb-16 lg:mb-24 border-b border-charcoal/10 pb-12 lg:pb-16">
           <div className="max-w-[750px]">
             <span className="font-mono text-xs tracking-[0.28em] uppercase text-stone mb-4 block">
               Archive / Writings
@@ -156,7 +156,7 @@ export default function Articles() {
             </p>
           </div>
           {/* Portrait Image on the Top Right */}
-          <div className="relative w-full max-w-[280px] md:w-[220px] lg:w-[260px] shrink-0 self-center md:self-end">
+          <div className="relative w-full max-w-[280px] md:w-[220px] lg:w-[260px] shrink-0 self-center md:self-start md:mt-12 lg:mt-16">
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-charcoal/15 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.12)]">
               <img 
                 src={profilePortrait} 
