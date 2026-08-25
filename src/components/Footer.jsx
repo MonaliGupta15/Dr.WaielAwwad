@@ -199,7 +199,7 @@ export default function Footer() {
         <img
           src={heroImage}
           alt=""
-          className="h-full w-auto md:w-full object-contain object-right md:object-right-bottom md:portrait:object-right grayscale"
+          className="h-full w-auto md:w-full object-contain object-right md:object-right-top md:portrait:object-right grayscale"
         />
       </div>
 
@@ -218,23 +218,23 @@ export default function Footer() {
       </div>
 
       {/* Main editorial composition */}
-      <div className="relative z-[3] min-h-screen px-[6vw] pt-[12vh] md:pt-[18vh] pb-12 flex flex-col justify-between">
+      <div className="relative z-[3] min-h-screen px-[6vw] pt-[10vh] md:pt-[13vh] pb-12 flex flex-col justify-between">
         <div className="font-mono text-[9px] md:text-[11px] tracking-[0.28em] uppercase text-ivory/50">
           <span className="text-gold">ARCHIVE / 2026</span>
           <span className="mx-3">—</span>
           The story continues
         </div>
 
-        <div className="relative mt-[10vh] mb-[12vh]">
+        <div className="relative mt-[6vh] mb-[7vh]">
           <div ref={titleRef} className="relative z-10 md:-translate-x-[2vw] md:portrait:-translate-x-[3vw]">
             <div className="font-display uppercase font-normal leading-[0.76] tracking-[-0.055em]">
-              <div ref={lineTheRef} className="text-[clamp(32px,8vw,140px)] will-change-transform whitespace-nowrap">
+              <div ref={lineTheRef} className="text-[clamp(32px,7vw,140px)] will-change-transform whitespace-nowrap">
                 <span ref={theFirstLetterRef} className="inline-block char-the">T</span>
                 <span ref={theSecondLetterRef} className="inline-block char-the">H</span>
                 <span className="inline-block char-the">E</span>
               </div>
 
-              <div ref={lineStoryRef} className="relative text-[clamp(32px,8vw,140px)] will-change-transform whitespace-nowrap">
+              <div ref={lineStoryRef} className="relative text-[clamp(32px,7vw,140px)] will-change-transform whitespace-nowrap">
                 <span ref={storyFirstLetterRef} className="inline-block char-story">S</span>
                 <span ref={storySecondLetterRef} className="inline-block char-story">T</span>
                 <span className="inline-block char-story">O</span>
@@ -243,7 +243,7 @@ export default function Footer() {
                 <span className="text-gold italic inline-block char-story">.</span>
               </div>
 
-              <div ref={lineContinuesRef} className="text-[clamp(32px,8vw,140px)] will-change-transform whitespace-nowrap">
+              <div ref={lineContinuesRef} className="text-[clamp(32px,7vw,140px)] will-change-transform whitespace-nowrap">
                 <span ref={continuesFirstLetterRef} className="inline-block char-continues">C</span>
                 <span className="inline-block char-continues">O</span>
                 <span className="inline-block char-continues">N</span>
@@ -258,7 +258,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="mt-24 max-w-[280px] md:mt-0 md:max-w-[170px] md:absolute md:right-[1.5vw] md:bottom-[-80px] md:portrait:bottom-[-220px] z-20">
+          <div className="mt-28 max-w-[280px] md:mt-0 md:max-w-[170px] md:absolute md:right-[18vw] lg:right-[1.5vw] md:bottom-[-130px] md:portrait:bottom-[-270px] z-20">
             <div className="w-8 h-px bg-gold mb-4" />
             <p className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] leading-[1.8] text-ivory/55">
               A life documented through journalism,
