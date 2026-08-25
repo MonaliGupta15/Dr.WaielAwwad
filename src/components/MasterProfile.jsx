@@ -32,14 +32,14 @@ export default function MasterProfile() {
         gsap.set(containerEl, { width: 0, opacity: 0, marginLeft: -6, marginRight: -6 });
         gsap.set(contentEl, { width: 0, opacity: 0 });
 
-        // Open quickly when scrolling down (pulling page up towards navbar),
-        // reaching full width and opacity before the heading hits the navbar.
+        // Open smoothly as user scrolls down, fully completing before the heading reaches the navbar
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top top',
-            end: '+=80', // fully open within 80px of scroll
-            scrub: 0.5,
+            end: '+=75', // fully open within 75px of scrolling, before hitting the navbar
+            scrub: 0.3,
+            invalidateOnRefresh: true,
           }
         });
 
@@ -49,14 +49,14 @@ export default function MasterProfile() {
           width: 'auto',
           marginLeft: 0,
           marginRight: 0,
-          duration: 0.35,
+          duration: 0.4,
           ease: 'none',
         })
         // 2. Expand inner content to push brackets apart
         .to(contentEl, {
           width: 'auto',
           opacity: 1,
-          duration: 0.65,
+          duration: 0.6,
           ease: 'power1.out',
         });
       }
@@ -161,7 +161,7 @@ export default function MasterProfile() {
       // Subtle 3D tilt on mouse move
       const tiltEl = imageTiltRef.current;
       const wrapEl = imageWrapRef.current;
-      if (!tiltEl || !wrapEl || window.innerWidth < 1024) return;
+      if (!tiltEl || !wrapEl || window.innerWidth < 990) return;
 
       const handleMouseMove = (e) => {
         const rect = wrapEl.getBoundingClientRect();
@@ -240,11 +240,16 @@ export default function MasterProfile() {
 
           <h2 className="font-display font-normal text-[clamp(36px,7.5vw,110px)] leading-[0.95] tracking-[-0.03em] uppercase text-charcoal flex flex-wrap items-center gap-x-3 gap-y-2 mt-6">
             <span>The Master</span>
-            <span ref={bracketsContainerRef} className="inline-flex items-center text-gold select-none">
+            <span
+              ref={bracketsContainerRef}
+              className="inline-flex items-center text-gold select-none overflow-hidden"
+              style={{ width: 0, opacity: 0, marginLeft: -6, marginRight: -6 }}
+            >
               <span className="font-serif font-light text-[1.15em] transform -translate-y-[0.04em]">(</span>
               <span
                 ref={bracketsContentRef}
                 className="overflow-hidden inline-flex flex-col items-center justify-center text-[9px] md:text-[10px] font-mono font-bold tracking-[0.2em] leading-[1.3] text-gold/80 text-center uppercase whitespace-nowrap flex-shrink-0"
+                style={{ width: 0, opacity: 0 }}
               >
                 <span className="px-1.5 flex flex-col items-center justify-center py-1 whitespace-nowrap min-w-max flex-shrink-0">
                   <span className="whitespace-nowrap flex-shrink-0">SINCE</span>
@@ -257,7 +262,7 @@ export default function MasterProfile() {
             <span>Profile</span>
           </h2>
 
-          <p className="max-w-[46ch] text-stone text-[15px] lg:text-[16px] leading-[1.8] pb-2">
+          <p className="max-w-[46ch] text-stone text-[15px] min-[990px]:text-[16px] leading-[1.8] pb-2">
             More than four decades across investigative journalism,
             foreign correspondence, geopolitical analysis and
             international press leadership.
@@ -269,7 +274,7 @@ export default function MasterProfile() {
         <div className="w-full h-px bg-stone-light/50 mt-5" />
 
         {/* Profile introduction */}
-        <div className="grid grid-cols-1 lg:grid-cols-[0.5fr_1fr_1.5fr] gap-12 lg:gap-16 items-start py-10 lg:py-14">
+        <div className="grid grid-cols-1 min-[990px]:grid-cols-[0.5fr_1fr_1.5fr] gap-12 min-[990px]:gap-16 items-start py-10 min-[990px]:py-14">
 
           <div>
             <span className="font-mono text-[11px] tracking-[0.25em] uppercase text-gold">
@@ -278,7 +283,7 @@ export default function MasterProfile() {
           </div>
 
           {/* Outer frame & animated portrait */}
-          <div className="relative w-full max-w-[320px] lg:max-w-[380px] mx-auto lg:mx-0">
+          <div className="relative w-full max-w-[320px] min-[990px]:max-w-[380px] mx-auto min-[990px]:mx-0">
             <div
               ref={imageWrapRef}
               className="relative w-full"
@@ -291,7 +296,7 @@ export default function MasterProfile() {
               />
 
               {/* Outer frame — thin border with breathing room */}
-              <div className="relative border border-charcoal/15 rounded-lg p-3 lg:p-4 bg-ivory">
+              <div className="relative border border-charcoal/15 rounded-lg p-3 min-[990px]:p-4 bg-ivory">
                 <div
                   ref={imageTiltRef}
                   className="relative aspect-[4/5] overflow-hidden rounded-[4px] shadow-[0_20px_45px_-15px_rgba(32,29,24,0.35)] will-change-transform"
@@ -326,14 +331,14 @@ export default function MasterProfile() {
               A career shaped by questions, conflict and perspective.
             </h3>
 
-            <p className="mt-8 max-w-[62ch] text-stone text-[15px] lg:text-[16px] leading-[1.85]">
+            <p className="mt-8 max-w-[62ch] text-stone text-[15px] min-[990px]:text-[16px] leading-[1.85]">
               Dr. Waiel Awwad is a senior foreign journalist and
               investigative correspondent whose career has taken him
               across South Asia, West Asia and other regions at the
               centre of international affairs.
             </p>
 
-            <p className="mt-5 max-w-[62ch] text-stone text-[15px] lg:text-[16px] leading-[1.85]">
+            <p className="mt-5 max-w-[62ch] text-stone text-[15px] min-[990px]:text-[16px] leading-[1.85]">
               His work spans conflict reporting, international
               journalism, geopolitical analysis and strategic affairs,
               with decades of reporting and commentary on some of the
@@ -345,9 +350,9 @@ export default function MasterProfile() {
         </div>
 
         {/* Highlights */}
-        <div ref={highlightsContainerRef} className="grid grid-cols-2 lg:grid-cols-4 border-t border-stone-light/50">
+        <div ref={highlightsContainerRef} className="grid grid-cols-2 min-[990px]:grid-cols-4 border-t border-stone-light/50">
 
-          <div className="py-5 lg:py-7 border-r border-stone-light/50">
+          <div className="py-5 min-[990px]:py-7 border-r border-stone-light/50">
             <div ref={num1979Ref} className="font-display text-[clamp(38px,4vw,64px)]">
               1979
             </div>
@@ -356,7 +361,7 @@ export default function MasterProfile() {
             </div>
           </div>
 
-          <div className="py-5 lg:py-7 lg:pl-8 lg:border-r border-stone-light/50">
+          <div className="py-5 min-[990px]:py-7 min-[990px]:pl-8 min-[990px]:border-r border-stone-light/50">
             <div ref={num40Ref} className="font-display text-[clamp(38px,4vw,64px)]">
               40+
             </div>
@@ -365,7 +370,7 @@ export default function MasterProfile() {
             </div>
           </div>
 
-          <div className="py-5 lg:py-7 lg:pl-8 border-t lg:border-t-0 border-stone-light/50">
+          <div className="py-5 min-[990px]:py-7 min-[990px]:pl-8 border-t min-[990px]:border-t-0 border-stone-light/50">
             <div className="font-display text-[clamp(28px,3vw,48px)]">
               West Asia
             </div>
@@ -374,7 +379,7 @@ export default function MasterProfile() {
             </div>
           </div>
 
-          <div className="py-5 lg:py-7 lg:pl-8 border-t lg:border-t-0 lg:border-l border-stone-light/50">
+          <div className="py-5 min-[990px]:py-7 min-[990px]:pl-8 border-t min-[990px]:border-t-0 min-[990px]:border-l border-stone-light/50">
             <div className="font-display text-[clamp(28px,3vw,48px)]">
               Global
             </div>

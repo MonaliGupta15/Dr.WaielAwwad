@@ -60,13 +60,13 @@ export default function HeroSection() {
           scrollTrigger: {
             trigger: viewportRef.current,
             start: 'top top',
-            end: isDesktop ? '+=180%' : '+=100%',
+            end: '+=180%',
             scrub: 1.2,
             pin: true,
           },
         });
 
-        const dur = isDesktop ? 0.45 : 1;
+        const dur = 0.45;
 
         tl.to(scrollCueRef.current, { opacity: 0, duration: 0.08 }, 0);
         tl.to(wordWaielRef.current, { xPercent: 34 * shear, duration: dur, ease: 'none' }, 0);
@@ -80,24 +80,22 @@ export default function HeroSection() {
         tl.to(labelRef.current, { xPercent: -8 * shear, duration: dur, ease: 'none' }, 0);
         tl.to(
           [eyebrowRef.current, labelRef.current],
-          { opacity: 0, duration: isDesktop ? 0.1 : 0.15 },
-          isDesktop ? 0.35 : 0.85
+          { opacity: 0, duration: 0.15 },
+          0.35
         );
 
-        if (isDesktop) {
-          // Circular reveal — explicit center coordinate (50% 100% =
-          // bottom-center of the full-bleed section), grown via a
-          // radius percentage. 150% safely overshoots the viewport
-          // diagonal from a bottom-center origin so full coverage is
-          // guaranteed at any aspect ratio, without needing an exact
-          // diagonal calculation.
-          tl.fromTo(
-            revealRef.current,
-            { clipPath: 'circle(0% at 50% 100%)' },
-            { clipPath: 'circle(150% at 50% 100%)', duration: 0.55, ease: 'power1.inOut' },
-            0.45
-          );
-        }
+        // Circular reveal — explicit center coordinate (50% 100% =
+        // bottom-center of the full-bleed section), grown via a
+        // radius percentage. 150% safely overshoots the viewport
+        // diagonal from a bottom-center origin so full coverage is
+        // guaranteed at any aspect ratio, without needing an exact
+        // diagonal calculation.
+        tl.fromTo(
+          revealRef.current,
+          { clipPath: 'circle(0% at 50% 100%)' },
+          { clipPath: 'circle(150% at 50% 100%)', duration: 0.55, ease: 'power1.inOut' },
+          0.45
+        );
       };
 
       mm.add('(min-width: 1024px)', () => setupAnimations(true));
@@ -122,9 +120,9 @@ export default function HeroSection() {
         {/* Layer 2 — portrait, transparent PNG cutout */}
         <div
           ref={portraitWrapRef}
-          className="absolute inset-0 z-[2] flex items-end justify-center lg:justify-end pointer-events-none will-change-transform"
+          className="absolute inset-0 z-[2] flex items-end justify-end pointer-events-none will-change-transform"
         >
-          <div className="relative h-[92%] lg:h-[104%] lg:mr-[4vw]">
+          <div className="relative h-[88%] lg:h-[104%] portrait:h-[88%] mr-[-23vh] sm:mr-[-10vw] lg:mr-[4vw] md:portrait:mr-[-22vw]">
             <img
               src={heroImage}
               alt="Dr. Waiel Awwad"
@@ -141,7 +139,7 @@ export default function HeroSection() {
         {/* Eyebrow */}
         <div
           ref={eyebrowRef}
-          className="absolute top-[24%] left-[6%] lg:top-[19%] lg:left-[7%] z-20 will-change-transform"
+          className="absolute top-[24%] left-[8.5%] lg:top-[19%] lg:left-[7%] portrait:top-[24%] portrait:left-[8.5%] z-20 will-change-transform"
         >
           <span className="block font-mono text-[10px] lg:text-xs tracking-[0.3em] uppercase text-ivory/60 mb-2">
             West Asian Strategist
@@ -153,21 +151,21 @@ export default function HeroSection() {
         <div className="absolute inset-0 z-[15] overflow-hidden pointer-events-none">
           <div
             ref={wordWaielRef}
-            className="absolute top-[32%] -left-[1%] lg:top-[25%] lg:left-[5%] will-change-transform"
+            className="absolute top-[48%] left-[3.5%] lg:top-[25%] lg:left-[5%] portrait:top-[48%] portrait:left-[3.5%] will-change-transform"
           >
             <span className="block font-display italic font-light text-[clamp(20px,2.4vw,38px)] text-ivory/90 mb-1 lg:mb-2 pl-[6%] lg:pl-[1%]">
               Dr.
             </span>
-            <h1 className="font-display font-normal text-[clamp(72px,17vw,260px)] leading-[0.8] tracking-[-0.015em] text-ivory whitespace-nowrap">
+            <h1 className="font-display font-normal text-[clamp(60px,12vw,120px)] lg:text-[clamp(72px,17vw,260px)] leading-[0.8] tracking-[-0.015em] text-ivory whitespace-nowrap">
               WAIEL
             </h1>
           </div>
 
           <div
             ref={wordAwwadRef}
-            className="absolute bottom-[12%] left-[8%] lg:bottom-[7%] lg:left-[24%] will-change-transform"
+            className="absolute top-[calc(48%+clamp(105px,17.5vw,240px))] left-[12%] lg:top-auto lg:bottom-[12%] lg:left-[24%] portrait:top-[calc(48%+clamp(105px,17.5vw,240px))] portrait:bottom-auto portrait:left-[12%] will-change-transform"
           >
-            <h1 className="font-display italic font-light text-[clamp(72px,17vw,260px)] leading-[0.8] tracking-[-0.015em] text-gold whitespace-nowrap">
+            <h1 className="font-display italic font-light text-[clamp(60px,12vw,120px)] lg:text-[clamp(72px,17vw,260px)] leading-[0.8] tracking-[-0.015em] text-gold whitespace-nowrap">
               AWWAD
             </h1>
           </div>
@@ -176,7 +174,7 @@ export default function HeroSection() {
         {/* Supporting label */}
         <div
           ref={labelRef}
-          className="absolute bottom-[5%] right-[6%] lg:bottom-[9%] lg:right-[8%] z-20 text-right will-change-transform"
+          className="absolute bottom-[5%] right-[6%] lg:bottom-[3.5%] lg:right-[8%] z-20 text-right will-change-transform"
         >
           <span className="block font-mono text-[10px] lg:text-[11px] tracking-[0.24em] uppercase text-ivory/70">
             Dr. Waiel Awwad
@@ -216,7 +214,7 @@ export default function HeroSection() {
             true screen-center. */}
         <div
           ref={revealRef}
-          className="hidden lg:block absolute inset-0 z-[30] w-full h-full overflow-hidden"
+          className="absolute inset-0 z-[30] w-full h-full overflow-hidden"
           style={{
             clipPath: 'circle(0% at 50% 100%)',
           }}

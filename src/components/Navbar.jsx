@@ -156,7 +156,7 @@ export default function Navbar() {
         <nav
           aria-label="Primary"
           className={
-            'hidden lg:flex items-center justify-between rounded-full border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ' +
+            'hidden min-[990px]:flex items-center justify-between rounded-full border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ' +
             (isScrolled
               ? 'bg-charcoal/65 backdrop-blur-lg border-ivory/20 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.45)] py-3 px-6'
               : 'bg-charcoal/45 backdrop-blur-md border-ivory/15 shadow-none py-4 px-8')
@@ -185,7 +185,7 @@ export default function Navbar() {
         </nav>
 
         {/* ============ MOBILE PILL ============ */}
-        <div className="lg:hidden">
+        <div className="min-[990px]:hidden">
           <div
             className={
               'flex items-center justify-between rounded-full border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ' +

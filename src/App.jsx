@@ -19,22 +19,31 @@ const App = () => {
       const height = window.innerHeight;
       const referenceWidth = 1440;
 
+      const rootEl = document.getElementById('root');
+
       let scale = 1;
-      if (width >= 1024 && width < referenceWidth) {
+      if (width >= 1200 && width < referenceWidth) {
         scale = width / referenceWidth;
         document.documentElement.style.zoom = scale;
+        document.documentElement.style.setProperty('--zoom-scale', scale);
+        if (rootEl) {
+          rootEl.style.zoom = scale;
+          rootEl.style.width = `${100 / scale}%`;
+        }
       } else {
         document.documentElement.style.zoom = '1';
+        document.documentElement.style.setProperty('--zoom-scale', '1');
+        if (rootEl) {
+          rootEl.style.zoom = '';
+          rootEl.style.width = '';
+        }
       }
 
       // Calculate layout height of the viewport
       const layoutHeight = height / scale;
 
-      // Cap section layout height to 900px (16:10 aspect ratio box) on portrait viewports
+      // Use the actual layout height of the viewport for section heights
       let sectionHeightVal = `${layoutHeight}px`;
-      if (width < height) {
-        sectionHeightVal = '900px';
-      }
 
       document.documentElement.style.setProperty('--section-height', sectionHeightVal);
 
@@ -49,6 +58,12 @@ const App = () => {
     return () => {
       window.removeEventListener('resize', handleScale);
       document.documentElement.style.zoom = '';
+      document.documentElement.style.removeProperty('--zoom-scale');
+      const rootEl = document.getElementById('root');
+      if (rootEl) {
+        rootEl.style.zoom = '';
+        rootEl.style.width = '';
+      }
     };
   }, []);
 

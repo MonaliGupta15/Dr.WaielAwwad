@@ -10,14 +10,14 @@ const CircularTransition = ({ children }) => {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // Start the circle at the top-center (50% 0%) with 0% radius,
-      // and animate it to 120% radius to fully reveal the section.
+      // and animate it to 150% radius to fully reveal the section.
       gsap.fromTo(
         containerRef.current,
         {
           clipPath: 'circle(0% at 50% 0%)',
         },
         {
-          clipPath: 'circle(120% at 50% 0%)',
+          clipPath: 'circle(150% at 50% 0%)',
           ease: 'none',
           scrollTrigger: {
             trigger: containerRef.current,

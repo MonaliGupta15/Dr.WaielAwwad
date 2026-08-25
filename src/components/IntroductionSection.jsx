@@ -60,7 +60,7 @@ const IntroductionSection = () => {
       // Subtle 3D tilt on mouse move — desktop only, restrained range
       const tiltEl = imageTiltRef.current;
       const wrapEl = imageWrapRef.current;
-      if (!tiltEl || !wrapEl || window.innerWidth < 1024) return;
+      if (!tiltEl || !wrapEl || window.innerWidth < 990) return;
 
         const handleMouseMove = (e) => {
         const rect = wrapEl.getBoundingClientRect();
@@ -132,15 +132,15 @@ const IntroductionSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative section-min-h-screen lg:section-h-screen lg:min-h-0 bg-ivory overflow-hidden px-[7vw] py-[12vh] lg:pt-[12vh] lg:pb-[6vh]"
+      className="relative section-min-h-screen min-[990px]:section-h-screen bg-ivory overflow-hidden px-[7vw] min-[990px]:px-[5vw] py-[6vh] flex flex-col justify-center intro-short-container"
     >
-      <div className="grid section-min-h-screen lg:min-h-0 lg:h-full grid-cols-1 lg:grid-cols-2 items-center lg:items-start lg:pt-[5vh] gap-[8vw]">
+      <div className="grid grid-cols-1 min-[990px]:grid-cols-2 items-center gap-[4vh] min-[990px]:gap-[6vw] intro-short-grid">
 
         {/* IMAGE */}
-        <div className="relative order-2 lg:order-1">
+        <div className="relative order-2 min-[990px]:order-1">
           <div
             ref={imageWrapRef}
-            className="relative w-full max-w-[520px] lg:max-w-[400px] mx-auto"
+            className="relative w-full max-w-[260px] sm:max-w-[320px] min-[990px]:max-w-[460px] mx-auto intro-short-image-wrap"
             style={{ perspective: '900px' }}
           >
             {/* Ambient shadow — sits behind the frame, deepens/shifts
@@ -153,7 +153,7 @@ const IntroductionSection = () => {
 
             {/* Outer frame — thin border with breathing room around
                 the photo, editorial matting rather than a tight crop */}
-            <div className="relative border border-charcoal/15 rounded-lg p-3 lg:p-4 bg-ivory">
+            <div className="relative border border-charcoal/15 rounded-lg p-2 min-[990px]:p-4 bg-ivory">
               <div
                 ref={imageTiltRef}
                 className="relative aspect-[4/5] overflow-hidden rounded-[4px] shadow-[0_20px_45px_-15px_rgba(32,29,24,0.35)] will-change-transform"
@@ -184,35 +184,35 @@ const IntroductionSection = () => {
         </div>
 
         {/* CONTENT */}
-        <div className="order-1 lg:order-2">
+        <div className="order-1 min-[990px]:order-2">
 
-          <div className="flex items-center gap-3 mb-8 lg:mb-6">
+          <div className="flex items-center gap-3 mb-5 min-[990px]:mb-6">
             <span className="w-8 h-px bg-gold" />
             <span className="font-mono text-[10px] tracking-[0.28em] uppercase text-stone">
               Introduction
             </span>
           </div>
 
-          <h2 className="font-display font-normal text-charcoal leading-[0.95] text-[clamp(48px,6.5vw,100px)] lg:text-[clamp(36px,4.5vw,64px)] max-w-[18ch]">
+          <h2 className="font-display font-normal text-charcoal leading-[0.95] text-[clamp(26px,6vw,48px)] min-[990px]:text-[clamp(44px,4.8vw,68px)] max-w-[18ch] intro-short-title">
             A voice shaped by the region
             <span className="text-gold italic">
               {' '}he has spent decades observing.
             </span>
           </h2>
 
-          <p className="mt-10 lg:mt-6 max-w-[48ch] text-stone text-[15px] lg:text-[16px] leading-[1.8]">
+          <p className="mt-4 min-[990px]:mt-6 max-w-[48ch] text-stone text-[14px] min-[990px]:text-[17px] leading-[1.8] intro-short-paragraph">
             From the newsroom to the wider world, Dr. Waiel Awwad has spent
             decades documenting, interpreting, and examining the political
             realities of West Asia.
           </p>
 
-          <p className="mt-5 lg:mt-4 max-w-[48ch] text-stone text-[15px] lg:text-[16px] leading-[1.8]">
+          <p className="mt-3 min-[990px]:mt-4 max-w-[48ch] text-stone text-[14px] min-[990px]:text-[17px] leading-[1.8] intro-short-paragraph">
             His work has taken him across stories of conflict, diplomacy,
             power, and people — giving him a perspective shaped not only by
             what he has witnessed, but by the region itself.
           </p>
 
-          <div className="mt-12 lg:mt-8">
+          <div className="mt-6 min-[990px]:mt-8 intro-short-button-wrap">
             <a
               href="/master-profile"
               className="inline-flex items-center gap-4 font-mono text-[11px] tracking-[0.2em] uppercase text-charcoal group"

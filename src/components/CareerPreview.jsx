@@ -92,9 +92,13 @@ const CareerPreview = () => {
         }
       );
 
-      /* HEADING */
+      /* HEADING & INTRO COPY */
       const headingLines = headingRef.current.querySelectorAll('.reveal-line-inner');
-      gsap.fromTo(
+      const introTl = gsap.timeline({
+        scrollTrigger: { trigger: headingRef.current, start: 'top 85%' }
+      });
+
+      introTl.fromTo(
         headingLines,
         { yPercent: 110 },
         {
@@ -102,21 +106,18 @@ const CareerPreview = () => {
           duration: 1.1,
           ease: 'power3.out',
           stagger: 0.12,
-          scrollTrigger: { trigger: headingRef.current, start: 'top 85%' },
         }
-      );
-
-      /* INTRO COPY */
-      gsap.fromTo(
+      )
+      .fromTo(
         subCopyRef.current,
         { opacity: 0, y: 24 },
         {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 0.8,
           ease: 'power2.out',
-          scrollTrigger: { trigger: subCopyRef.current, start: 'top 85%' },
-        }
+        },
+        '-=0.6'
       );
 
       /* PROGRESS RAIL — draws in alongside the archive list */
@@ -200,6 +201,11 @@ const CareerPreview = () => {
   const changeRole = (index) => {
     if (index === activeRole) return;
 
+    if (window.innerWidth < 990) {
+      setActiveRole(index);
+      return;
+    }
+
     // Kill any in-flight image-change timeline before starting a new one
     imageTlRef.current?.kill();
 
@@ -217,14 +223,14 @@ const CareerPreview = () => {
       const sectionTop = sectionRect.top / zoom;
       const rowHeight = rowRect.height / zoom;
 
-      const cardHeight = imageWrapRef.current ? imageWrapRef.current.offsetHeight : 440;
+      const cardHeight = (imageWrapRef.current && imageWrapRef.current.offsetHeight) || 480;
       const rowCenter = (rowTop - sectionTop) + (rowHeight / 2);
       
       let targetTop = rowCenter - (cardHeight / 2);
       
       // Constrain within section padding limits so it never gets cut off
-      const minTop = 40;
-      const maxTop = sectionHeight - cardHeight - 40;
+      const minTop = 60;
+      const maxTop = sectionHeight - cardHeight - 60;
       
       const constrainedTop = Math.max(minTop, Math.min(targetTop, Math.max(minTop, maxTop)));
       setCardTop(constrainedTop);
@@ -269,7 +275,7 @@ const CareerPreview = () => {
       {/* FLOATING CARD CONTAINER */}
       <div
         ref={imageWrapRef}
-        className={`pointer-events-none absolute right-[6vw] z-20 hidden w-[32vw] max-w-[480px] lg:block transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+        className={`pointer-events-none absolute right-[6vw] z-20 hidden w-[32vw] max-w-[480px] min-[990px]:block transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
           activeRole !== null ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
         style={{ top: `${cardTop}px` }}
@@ -322,7 +328,7 @@ const CareerPreview = () => {
       </div>
 
       {/* INTRO */}
-      <div className="relative z-10 mb-[7vh] grid grid-cols-1 gap-[8vw] lg:grid-cols-[1fr_0.8fr]">
+      <div className="relative z-10 mb-[7vh] grid grid-cols-1 gap-[8vw] min-[990px]:grid-cols-[1fr_0.8fr]">
         <div ref={headingRef}>
           <h2 className="max-w-[12ch] font-display text-[clamp(38px,5vw,72px)] font-normal leading-[1.1] tracking-[-0.02em]">
             <span className="block overflow-hidden py-2 -my-2">
@@ -342,7 +348,7 @@ const CareerPreview = () => {
           <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.22em] text-gold">
             Four decades of perspective
           </p>
-          <p className="text-[15px] leading-[1.8] text-ivory/65 lg:text-[16px]">
+          <p className="text-[15px] leading-[1.8] text-ivory/65 min-[990px]:text-[16px]">
             Journalism became the lens through which Dr. Waiel Awwad
             observed the region — eventually shaping a broader body of
             work around West Asian politics, conflict, diplomacy and
@@ -352,11 +358,11 @@ const CareerPreview = () => {
       </div>
 
       {/* CAREER ARCHIVE — with progress rail on the left */}
-      <div className="relative z-10 flex gap-6 lg:gap-10">
+      <div className="relative z-10 flex gap-6 min-[990px]:gap-10">
         {/* Progress rail */}
         <div
           ref={railRef}
-          className="relative hidden w-px shrink-0 self-stretch bg-ivory/10 lg:block"
+          className="relative hidden w-px shrink-0 self-stretch bg-ivory/10 min-[990px]:block"
         >
           <div
             ref={railFillRef}
@@ -373,20 +379,21 @@ const CareerPreview = () => {
                 key={role.number}
                 ref={(el) => (rowRefs.current[i] = el)}
                 onMouseEnter={() => changeRole(i)}
-                className="group relative cursor-pointer overflow-hidden border-b border-ivory/15 py-6 transition-all duration-500 lg:py-7 lg:pr-[35%]"
+                onClick={() => changeRole(i)}
+                className="group relative cursor-pointer overflow-hidden border-b border-ivory/15 py-6 transition-all duration-500 min-[990px]:py-7 min-[990px]:pr-[38%]"
               >
                 {/* row-local divider draw-in on scroll entrance */}
                 <span className="row-divider absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-ivory/15" />
 
                 {/* Ghost oversized number — premium editorial texture */}
                 <span
-                  className="role-number-ghost pointer-events-none absolute -top-2 left-[70px] select-none font-display text-[clamp(90px,10vw,160px)] leading-none text-ivory/[0.035] lg:left-[90px]"
+                  className="role-number-ghost pointer-events-none absolute -top-2 left-[70px] select-none font-display text-[clamp(90px,10vw,160px)] leading-none text-ivory/[0.035] min-[990px]:left-[90px]"
                   aria-hidden="true"
                 >
                   {role.number}
                 </span>
 
-                <div className="relative grid grid-cols-[50px_1fr] gap-6 lg:grid-cols-[80px_1fr_0.8fr] lg:gap-10">
+                <div className="relative grid grid-cols-[50px_1fr] gap-6 min-[990px]:grid-cols-[80px_1.5fr_0.8fr] min-[990px]:gap-10">
                   {/* ACTIVE GOLD LINE */}
                   <span
                     className={`absolute left-0 top-0 h-full w-[2px] origin-top bg-gold transition-transform duration-500 ${
@@ -402,27 +409,48 @@ const CareerPreview = () => {
                   {/* TITLE */}
                   <div className="overflow-hidden py-3 -my-3">
                     <h3
-                      className={`role-title-inner font-display text-[clamp(28px,3.5vw,54px)] font-normal leading-[1.2] transition-all duration-500 will-change-transform ${
+                      className={`role-title-inner font-display text-[clamp(24px,3.2vw,48px)] font-normal leading-[1.2] transition-all duration-500 will-change-transform ${
                         isActive ? 'translate-x-3 text-gold' : 'text-ivory'
                       }`}
                     >
                       {role.title}
                     </h3>
 
-                    {/* MOBILE DESCRIPTION */}
-                    <p className="role-desc mt-3 block max-w-[38ch] text-[13px] leading-[1.7] text-ivory/45 lg:hidden">
-                      {role.description}
-                    </p>
+                    {/* MOBILE DESCRIPTION & IMAGE */}
+                    <div className="min-[990px]:hidden">
+                      <p className="role-desc mt-3 block max-w-[38ch] text-[13px] leading-[1.7] text-ivory/45">
+                        {role.description}
+                      </p>
+                      <div
+                        className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                          isActive
+                            ? 'max-h-[600px] opacity-100 scale-100 mt-4'
+                            : 'max-h-0 opacity-0 scale-95 pointer-events-none mt-0'
+                        }`}
+                      >
+                        <div className="bg-[#161716] rounded-[16px] p-3 border border-gold/15 shadow-lg flex flex-col text-ivory max-w-[420px]">
+                          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[12px] bg-charcoal flex items-center justify-center border border-white/[0.05]">
+                            <img
+                              src={role.image}
+                              alt={role.title}
+                              loading="lazy"
+                              decoding="async"
+                              className={`h-full w-full object-cover ${role.positionClass || 'object-center'}`}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   {/* DESKTOP DESCRIPTION */}
-                  <p className="role-desc hidden max-w-[38ch] text-[14px] leading-[1.7] text-ivory/45 lg:block">
+                  <p className="role-desc hidden max-w-[38ch] text-[14px] leading-[1.7] text-ivory/45 min-[990px]:block">
                     {role.description}
                   </p>
 
                   {/* ARCHIVE MARK */}
                   <div
-                    className={`absolute right-3 top-1/2 hidden -translate-y-1/2 font-mono text-[8px] tracking-[0.2em] transition-all duration-500 lg:block ${
+                    className={`absolute right-3 top-1/2 hidden -translate-y-1/2 font-mono text-[8px] tracking-[0.2em] transition-all duration-500 min-[990px]:block ${
                       isActive ? 'translate-x-0 opacity-60' : 'translate-x-3 opacity-0'
                     }`}
                   >
@@ -445,38 +473,6 @@ const CareerPreview = () => {
             →
           </span>
         </Link>
-      </div>
-
-      {/* MOBILE IMAGE */}
-      <div
-        className={`relative z-10 mt-8 block lg:hidden transition-all duration-500 ${
-          activeRole !== null ? 'opacity-100 max-h-[500px] scale-100' : 'opacity-0 max-h-0 scale-95 overflow-hidden mt-0'
-        }`}
-      >
-        <div className="bg-[#161716] rounded-[20px] p-4 border border-gold/15 shadow-xl flex flex-col text-ivory">
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[16px] bg-charcoal flex items-center justify-center border border-white/[0.05]">
-            {activeRole !== null && (
-              <img
-                src={CAREER_ROLES[activeRole].image}
-                alt={CAREER_ROLES[activeRole].title}
-                loading="lazy"
-                decoding="async"
-                className={`h-full w-full object-cover ${CAREER_ROLES[activeRole].positionClass || 'object-center'}`}
-              />
-            )}
-          </div>
-          <div className="mt-3 flex flex-col items-center text-center">
-            <p className="font-mono text-[8px] tracking-[0.3em] text-gold uppercase mb-1 font-semibold">
-              {activeRole !== null ? CAREER_ROLES[activeRole].category : ''}
-            </p>
-            <h3 className="font-sans text-ivory text-[1rem] font-semibold mb-1">
-              {activeRole !== null ? CAREER_ROLES[activeRole].title : ''}
-            </h3>
-            <p className="font-mono text-[8px] tracking-[0.25em] text-ivory/60 uppercase">
-              {activeRole !== null ? CAREER_ROLES[activeRole].period : ''}
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   );

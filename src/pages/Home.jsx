@@ -10,13 +10,6 @@ const Home = () => {
   return (
     <div>
       <HeroSection />
-      
-      {/* Mobile-only Introduction block with circular reveal transition */}
-      <div className="lg:hidden">
-        <CircularTransition>
-          <IntroductionSection />
-        </CircularTransition>
-      </div>
 
       <CircularTransition>
         <CareerPreview />

@@ -102,6 +102,7 @@ export default function AboutSection() {
   const introBracketRef = useRef(null);
 
   const finalPortalRef = useRef(null);
+  const finalTagRef = useRef(null);
   const finalHeadingRef = useRef(null);
   const finalQuoteRef = useRef(null);
   const finalDotRef = useRef(null);
@@ -177,45 +178,47 @@ export default function AboutSection() {
     }
 
     const isSmall = window.innerWidth < 1024;
-    const scrollLength = isSmall ? '450%' : '650%';
+    const scrollLength = isSmall ? '900%' : '1400%';
 
     const ctx = gsap.context(() => {
-      const segment = 1 / 10;
+      const stageWidth = 1 / 9; // 9 active stages for clean, responsive scroll timing
 
-      // 1. Core scroll-driven timeline
+      // 1. Core scroll-driven timeline with scrub
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: pinRef.current,
           start: 'top top',
           end: `+=${scrollLength}`,
-          scrub: 1,
+          scrub: 1.0,
           pin: true,
           anticipatePin: 1,
           onUpdate: (self) => {
             const progress = self.progress;
-            const activeIndex = Math.min(9, Math.floor(progress / segment));
             if (progressLabelRef.current) {
-              if (activeIndex >= 2 && activeIndex < 9) {
-                const chapter = CHAPTERS[activeIndex - 2];
-                progressLabelRef.current.textContent = `${chapter.number} / 07 — ${chapter.label}`;
-                progressLabelRef.current.style.opacity = '1';
-              } else if (activeIndex >= 9) {
-                progressLabelRef.current.style.opacity = '0';
-              } else {
+              if (progress < stageWidth) {
                 progressLabelRef.current.textContent = 'THE LAYERS OF A LIFE';
                 progressLabelRef.current.style.opacity = '1';
+              } else if (progress >= 7.8 * stageWidth) {
+                progressLabelRef.current.style.opacity = '0';
+              } else {
+                const chIndex = Math.min(6, Math.floor((progress - stageWidth) / (7 * stageWidth / 7)));
+                const chapter = CHAPTERS[chIndex];
+                if (chapter) {
+                  progressLabelRef.current.textContent = `${chapter.number} / 07 — ${chapter.label}`;
+                  progressLabelRef.current.style.opacity = '1';
+                }
               }
             }
           },
         },
       });
 
-      // 2. CONTINUOUS SCROLL-DRIVEN ROTATION (No global scale zoom, keep it stable at 1.0)
+      // 2. CONTINUOUS SCROLL-DRIVEN ROTATION
       if (tunnelGroupRef.current) {
         tl.fromTo(
           tunnelGroupRef.current,
           { rotate: 0, transformOrigin: '50% 50%' },
-          { rotate: 55, transformOrigin: '50% 50%', ease: 'none', duration: 0.94 },
+          { rotate: 60, transformOrigin: '50% 50%', ease: 'none', duration: 1 },
           0
         );
       }
@@ -232,31 +235,44 @@ export default function AboutSection() {
             rotate: direction * spinSpeed,
             transformOrigin: '50% 50%',
             ease: 'none',
-            duration: 0.94,
+            duration: 1,
           },
           0
         );
       });
 
-      // 4. DISSOLVING THE GOLD CORE (Fades out completely during the intro sequence before Chapter 1 enters)
+      // 4. GOLDEN CIRCLE IMPLOSION & OUTBURST DURING INTRO / TRANSITION TO 1ST CARD
       if (centerCircleRef.current) {
-        gsap.set(centerCircleRef.current, { opacity: 1, transformOrigin: '50% 50%' });
+        gsap.set(centerCircleRef.current, { opacity: 0, scale: 4.0, transformOrigin: '50% 50%' });
+
+        // Implodes inward into a glowing dot as bracket expands
         tl.to(
           centerCircleRef.current,
           {
-            scale: 6,
+            scale: 0.1,
+            opacity: 0.75,
+            transformOrigin: '50% 50%',
+            ease: 'power3.in',
+            duration: stageWidth * 0.35,
+          },
+          0.05 * stageWidth
+        );
+
+        // Golden circular outburst as intro exits and 1st Card enters (soft glow behind text for 100% readability)
+        tl.to(
+          centerCircleRef.current,
+          {
+            scale: 11.0,
             opacity: 0,
             transformOrigin: '50% 50%',
-            ease: 'power2.inOut',
-            duration: 2.0 * segment,
+            ease: 'expo.out',
+            duration: stageWidth * 0.8,
           },
-          0
+          0.4 * stageWidth
         );
       }
 
-      // 5. PROGRESS CONTENT TRANSITIONS WITH CIRCULAR REVEALS (10 States)
-
-      // Initialize starting state for Intro Screen (State 0)
+      // 5. STAGE INITIALIZATIONS
       if (introPortalRef.current) {
         gsap.set(introPortalRef.current, { opacity: 1, scale: 1, y: 0 });
       }
@@ -264,51 +280,28 @@ export default function AboutSection() {
         gsap.set(introBracketRef.current, { width: 0, opacity: 0, scale: 0.75 });
       }
 
-      // Initialize all chapter portals to be hidden initially
       for (let i = 0; i < 7; i++) {
         const portal = chapterContentRefs.current[i];
-        if (portal) {
-          gsap.set(portal, {
-            opacity: 0
-          });
-        }
-        if (chapterTextRefs.current[i]) {
-          gsap.set(chapterTextRefs.current[i], { opacity: 0, y: 35 });
-        }
+        if (portal) gsap.set(portal, { opacity: 0 });
+        if (chapterTextRefs.current[i]) gsap.set(chapterTextRefs.current[i], { opacity: 0, y: 35 });
         if (chapterImageRefs.current[i]) {
-          const img = chapterImageRefs.current[i].querySelector('img');
           gsap.set(chapterImageRefs.current[i], { opacity: 0 });
-          if (img) {
-            gsap.set(img, { scale: 1.05 });
-          }
+          const img = chapterImageRefs.current[i].querySelector('img');
+          if (img) gsap.set(img, { scale: 1.05 });
         }
       }
 
-      // Initialize final screen elements
-      if (finalPortalRef.current) {
-        gsap.set(finalPortalRef.current, { opacity: 0 });
-      }
-      if (finalHeadingRef.current) {
-        gsap.set(finalHeadingRef.current, { opacity: 0, y: 30 });
-      }
-      if (finalDotRef.current) {
-        gsap.set(finalDotRef.current, { opacity: 0, scale: 0.7 });
-      }
-      if (finalQuoteRef.current) {
-        gsap.set(finalQuoteRef.current, { opacity: 0, y: 15 });
-      }
+      if (finalPortalRef.current) gsap.set(finalPortalRef.current, { opacity: 0 });
+      if (finalTagRef.current) gsap.set(finalTagRef.current, { opacity: 0, y: -15 });
+      if (finalHeadingRef.current) gsap.set(finalHeadingRef.current, { opacity: 0, scale: 0.2 });
+      if (finalDotRef.current) gsap.set(finalDotRef.current, { opacity: 0, scale: 0.5 });
+      if (finalQuoteRef.current) gsap.set(finalQuoteRef.current, { opacity: 0, y: 15 });
 
-      // Initialize all concentric rings to be visible initially at scale 1
       ringGroupRefs.current.forEach((ring) => {
-        if (ring) {
-          gsap.set(ring, { scale: 1, opacity: 1, transformOrigin: '50% 50%' });
-        }
+        if (ring) gsap.set(ring, { scale: 1, opacity: 1, transformOrigin: '50% 50%' });
       });
 
-      // --- INTRO SCREEN TRANSITIONS ---
-      // 1. Bracket comes in (State 0 -> State 1)
-      const bracketStart = 0.4 * segment;
-      const bracketEnd = 1.0 * segment;
+      // --- STAGE 0: INTRO SCREEN ---
       if (introBracketRef.current) {
         tl.to(
           introBracketRef.current,
@@ -316,17 +309,12 @@ export default function AboutSection() {
             width: 'auto',
             opacity: 1,
             scale: 1,
-            duration: bracketEnd - bracketStart,
+            duration: stageWidth * 0.3,
             ease: 'power3.out'
           },
-          bracketStart
+          stageWidth * 0.1
         );
       }
-
-      // 2. Intro Screen Exits & Chapter 1 Enters (State 1 -> State 2)
-      const introExitStart = 1.4 * segment;
-      const introExitEnd = 2.0 * segment;
-
       if (introPortalRef.current) {
         tl.to(
           introPortalRef.current,
@@ -334,317 +322,172 @@ export default function AboutSection() {
             opacity: 0,
             scale: 0.96,
             y: -30,
-            duration: introExitEnd - introExitStart,
+            duration: stageWidth * 0.3,
             ease: 'power3.in'
           },
-          introExitStart
+          stageWidth * 0.65
         );
       }
 
-      // Chapter 1 Portal Entrance (State 2)
-      const ch1Portal = chapterContentRefs.current[0];
-      const ch1Text = chapterTextRefs.current[0];
-      const ch1Img = chapterImageRefs.current[0];
-
-      if (ch1Portal) {
-        tl.set(ch1Portal, { opacity: 1 }, introExitStart);
-        if (ch1Img) {
-          tl.fromTo(
-            ch1Img,
-            { opacity: 0 },
-            { opacity: 1, duration: introExitEnd - introExitStart, ease: 'power2.out' },
-            introExitStart
-          );
-          const img = ch1Img.querySelector('img');
-          if (img) {
-            tl.to(img, { scale: 1.0, duration: introExitEnd - introExitStart, ease: 'power2.out' }, introExitStart);
-          }
-        }
-        if (ch1Text) {
-          tl.to(ch1Text, { opacity: 1, y: 0, duration: introExitEnd - introExitStart, ease: 'power2.out' }, introExitStart);
-        }
-      }
-
-      // Build transition sequence between chapters (Chapters 1 -> 7)
+      // --- STAGES 1 to 7: CHAPTER CARDS ---
       for (let i = 0; i < 7; i++) {
-        // --- RING ANIMATIONS ---
-        const ringIndex = 6 - i; // Outermost ring exits first, innermost exits last
+        const stageStart = (i + 1) * stageWidth;
+        const entStart = stageStart + stageWidth * 0.05;
+        const entEnd = stageStart + stageWidth * 0.25;
+        const extStart = stageStart + stageWidth * 0.75;
+        const extEnd = stageStart + stageWidth * 0.95;
+
+        // Ring Glow & Expansion
+        const ringIndex = 6 - i;
         const ring = ringGroupRefs.current[ringIndex];
         const ringCircle = ring?.querySelector('circle');
-        
-        if (ring) {
-          // 1. Glow Accents: active ring turns gold softly
-          if (ringCircle) {
-            if (i === 0) {
-              gsap.set(ringCircle, { stroke: '#c5a880', strokeOpacity: 0.25, strokeWidth: 1.0 });
-              tl.to(
-                ringCircle,
-                {
-                  stroke: 'var(--color-ivory)',
-                  strokeOpacity: 0.08,
-                  strokeWidth: 0.8,
-                  duration: 0.18 * segment,
-                  ease: 'power2.in'
-                },
-                2.6 * segment
-              );
-            } else {
-              const glowStart = (i + 2 - 0.4) * segment;
-              const glowEnd = (i + 2 + 0.1) * segment;
-              gsap.set(ringCircle, { stroke: 'var(--color-ivory)', strokeOpacity: 0.08, strokeWidth: 0.8 });
-              
-              tl.to(
-                ringCircle,
-                {
-                  stroke: '#c5a880',
-                  strokeOpacity: 0.25,
-                  strokeWidth: 1.0,
-                  duration: glowEnd - glowStart,
-                  ease: 'power2.out'
-                },
-                glowStart
-              );
 
-              if (i < 6) {
-                const fadeStart = (i + 2 + 0.6) * segment;
-                const fadeEnd = (i + 2 + 1.2) * segment;
-                tl.to(
-                  ringCircle,
-                  {
-                    stroke: 'var(--color-ivory)',
-                    strokeOpacity: 0.08,
-                    strokeWidth: 0.8,
-                    duration: fadeEnd - fadeStart,
-                    ease: 'power2.in'
-                  },
-                  fadeStart
-                );
-              }
+        if (ring) {
+          if (ringCircle) {
+            gsap.set(ringCircle, { stroke: 'var(--color-ivory)', strokeOpacity: 0.08, strokeWidth: 0.8 });
+            tl.to(
+              ringCircle,
+              { stroke: '#c5a880', strokeOpacity: 0.25, strokeWidth: 1.0, duration: stageWidth * 0.2, ease: 'power2.out' },
+              entStart
+            );
+            if (i < 6) {
+              tl.to(
+                ringCircle,
+                { stroke: 'var(--color-ivory)', strokeOpacity: 0.08, strokeWidth: 0.8, duration: stageWidth * 0.2, ease: 'power2.in' },
+                extStart
+              );
             }
           }
-
-          // 2. Exit: ring scales up to 12 and fades out
           if (i < 6) {
-            const exitStart = (i + 2 + 0.6) * segment;
-            const exitEnd = (i + 2 + 1.2) * segment;
             tl.to(
               ring,
-              {
-                scale: 12,
-                opacity: 0,
-                duration: exitEnd - exitStart,
-                ease: 'power2.inOut',
-                transformOrigin: '50% 50%'
-              },
-              exitStart
+              { scale: 12, opacity: 0, duration: stageWidth * 0.3, ease: 'power2.inOut', transformOrigin: '50% 50%' },
+              extStart
             );
           }
         }
 
-        // --- CHAPTER CONTENT ANIMATIONS ---
+        // Chapter Content Transitions (Entrance -> Hold Pad -> Exit)
         const portal = chapterContentRefs.current[i];
         const text = chapterTextRefs.current[i];
         const imgWrap = chapterImageRefs.current[i];
-        
+
         if (portal) {
-          // 1. Portal Entrance (skip Chapter 1 as it starts visible after intro exits)
-          if (i > 0) {
-            const entStart = (i + 2 - 0.2) * segment;
-            const entEnd = (i + 2 + 0.2) * segment;
-            
-            tl.set(portal, { opacity: 1 }, entStart);
-
-            if (imgWrap) {
-              tl.fromTo(
-                imgWrap,
-                { opacity: 0 },
-                { opacity: 1, duration: entEnd - entStart, ease: 'power2.out' },
-                entStart
-              );
-              const img = imgWrap.querySelector('img');
-              if (img) {
-                tl.to(
-                  img,
-                  {
-                    scale: 1.0,
-                    duration: entEnd - entStart,
-                    ease: 'power2.out'
-                  },
-                  entStart
-                );
-              }
-            }
-
-            if (text) {
-              tl.to(
-                text,
-                {
-                  opacity: 1,
-                  y: 0,
-                  duration: entEnd - entStart,
-                  ease: 'power2.out'
-                },
-                entStart
-              );
+          // Entrance
+          tl.set(portal, { opacity: 1 }, entStart);
+          if (imgWrap) {
+            tl.fromTo(
+              imgWrap,
+              { opacity: 0 },
+              { opacity: 1, duration: entEnd - entStart, ease: 'power2.out' },
+              entStart
+            );
+            const img = imgWrap.querySelector('img');
+            if (img) {
+              tl.to(img, { scale: 1.0, duration: entEnd - entStart, ease: 'power2.out' }, entStart);
             }
           }
+          if (text) {
+            tl.to(text, { opacity: 1, y: 0, duration: entEnd - entStart, ease: 'power2.out' }, entStart);
+          }
 
-          // 2. Portal Exit (except for Chapter 7, which has a custom exit)
-          if (i < 6) {
-            const extStart = (i + 2 + 0.6) * segment;
-            const extEnd = (i + 2 + 0.9) * segment;
-
+          // Exit (completes before next stage starts)
+          if (i <= 6) {
             if (imgWrap) {
-              tl.to(
-                imgWrap,
-                {
-                  opacity: 0,
-                  duration: extEnd - extStart,
-                  ease: 'power2.out'
-                },
-                extStart
-              );
+              tl.to(imgWrap, { opacity: 0, duration: extEnd - extStart, ease: 'power2.in' }, extStart);
             }
-
             if (text) {
-              tl.to(
-                text,
-                {
-                  opacity: 0,
-                  y: -35,
-                  duration: extEnd - extStart,
-                  ease: 'power2.in'
-                },
-                extStart
-              );
+              tl.to(text, { opacity: 0, y: -35, duration: extEnd - extStart, ease: 'power2.in' }, extStart);
             }
-
-            // Hide portal container
-            tl.set(portal, { opacity: 0 }, (i + 2 + 1.2) * segment);
+            tl.set(portal, { opacity: 0 }, stageStart + stageWidth);
           }
         }
       }
 
-      // 1. Chapter 07 Exit (0.85 to 0.90)
-      const ch7Portal = chapterContentRefs.current[6];
-      const ch7Text = chapterTextRefs.current[6];
-      const ch7Img = chapterImageRefs.current[6];
+      // --- STAGE 8: GOLDEN CIRCLE IMPLOSION (SYNCHRONIZED WITH RING EXIT) & BURST WITH TEXT ---
+      const implodeTime = 7.75 * stageWidth;
+      const burstTime = 8.0 * stageWidth;
 
-      if (ch7Portal) {
-        if (ch7Img) {
+      // 1. Concentric Rings exit at 7.75
+      ringGroupRefs.current.forEach((ring) => {
+        if (ring) {
           tl.to(
-            ch7Img,
-            {
-              opacity: 0,
-              scale: 0.92,
-              duration: 0.05,
-              ease: 'power3.inOut'
-            },
-            0.85
+            ring,
+            { scale: 14, opacity: 0, duration: stageWidth * 0.25, ease: 'power2.inOut', transformOrigin: '50% 50%' },
+            implodeTime
           );
         }
-        if (ch7Text) {
-          tl.to(
-            ch7Text,
-            {
-              opacity: 0,
-              y: -30,
-              duration: 0.05,
-              ease: 'power3.inOut'
-            },
-            0.85
-          );
-        }
-        // Hide portal container
-        tl.set(ch7Portal, { opacity: 0 }, 0.90);
-      }
+      });
 
-      // 2. Final Gold Center Point Bridge: fades back in during Ch 7 exit (0.85 to 0.90)
-      if (centerCircleRef.current) {
-        tl.to(
-          centerCircleRef.current,
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 0.05,
-            ease: 'power3.inOut'
-          },
-          0.85
-        );
-      }
-
-      // 3. Final Tunnel and Gold Center Expansion (0.90 to 0.94)
-      if (tunnelGroupRef.current) {
-        tl.to(
-          tunnelGroupRef.current,
-          {
-            scale: 3.5,
-            opacity: 0,
-            duration: 0.04,
-            ease: 'power3.in',
-            transformOrigin: '50% 50%'
-          },
-          0.90
-        );
-      }
-      if (centerCircleRef.current) {
-        tl.to(
-          centerCircleRef.current,
-          {
-            scale: 60,
-            opacity: 0,
-            duration: 0.04,
-            ease: 'power3.in',
-            transformOrigin: '50% 50%'
-          },
-          0.90
-        );
-      }
-
-      // 4. Moment of Silence (0.94 to 0.95)
-
-      // 5. Final Message Enters (0.95 to 0.98)
       if (finalPortalRef.current) {
-        tl.to(finalPortalRef.current, { opacity: 1, duration: 0.01 }, 0.95);
+        tl.set(finalPortalRef.current, { opacity: 1 }, implodeTime);
       }
-      if (finalHeadingRef.current) {
+
+      // 2. AT THE EXACT SAME TIME (7.75), Golden Circle implodes inwards into center dot!
+      if (centerCircleRef.current) {
+        // Implode inwards starting at the exact moment 7th ring exits
+        tl.fromTo(
+          centerCircleRef.current,
+          { opacity: 0, scale: 6.0, transformOrigin: '50% 50%' },
+          { opacity: 1, scale: 0.08, duration: stageWidth * 0.25, ease: 'power3.in' },
+          implodeTime
+        );
+        // Sudden burst outward at 8.0 together with the text ("ekdum se bahaar aagya") -> fades as text gets big
         tl.to(
-          finalHeadingRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.03,
-            ease: 'power3.out'
-          },
-          0.95
+          centerCircleRef.current,
+          { opacity: 0, scale: 12.0, duration: stageWidth * 0.6, ease: 'expo.out', transformOrigin: '50% 50%' },
+          burstTime
         );
       }
 
-      // Staggered Period Dot Animation (0.975 to 0.985)
+      // 2. "SO THE JOURNEY GOES ON." comes out TOGETHER with the golden circle glow!
+      if (finalHeadingRef.current) {
+        tl.fromTo(
+          finalHeadingRef.current,
+          { opacity: 0, scale: 0.05, transformOrigin: '50% 50%' },
+          {
+            opacity: 1,
+            scale: 1.0,
+            duration: stageWidth * 0.45,
+            ease: 'expo.out'
+          },
+          burstTime
+        );
+      }
+
+      // Golden Dot period "." pulse animation
       if (finalDotRef.current) {
+        tl.fromTo(
+          finalDotRef.current,
+          { opacity: 0, scale: 0.2 },
+          { opacity: 1, scale: 1.2, duration: stageWidth * 0.2, ease: 'back.out(2)' },
+          burstTime + stageWidth * 0.25
+        );
         tl.to(
           finalDotRef.current,
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 0.01,
-            ease: 'power2.out'
-          },
-          0.975
+          { scale: 1.0, duration: stageWidth * 0.1, ease: 'power2.out' },
+          burstTime + stageWidth * 0.45
         );
       }
 
-      // 6. Quote Enters (0.98 to 1.0)
+      // --- IMMEDIATE SMALL TEXT REVEAL ("THE JOURNEY" + QUOTE) & BRIEF HOLD ---
+      const smallTextStart = burstTime + stageWidth * 0.35;
+
+      // Top Tagline "THE JOURNEY" fades in & slides down immediately
+      if (finalTagRef.current) {
+        tl.to(
+          finalTagRef.current,
+          { opacity: 1, y: 0, duration: stageWidth * 0.25, ease: 'power2.out' },
+          smallTextStart
+        );
+      }
+
+      // Bottom Quote fades in & slides up immediately
       if (finalQuoteRef.current) {
         tl.to(
           finalQuoteRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.02,
-            ease: 'power2.out'
-          },
-          0.98
+          { opacity: 1, y: 0, duration: stageWidth * 0.25, ease: 'power2.out' },
+          smallTextStart + stageWidth * 0.08
         );
       }
 
@@ -880,7 +723,10 @@ export default function AboutSection() {
             className="absolute inset-0 flex flex-col items-center justify-center text-center px-[8vw] pointer-events-none"
             style={{ opacity: 0 }}
           >
-            <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-gold mb-6 block">
+            <span
+              ref={finalTagRef}
+              className="font-mono text-[10px] tracking-[0.3em] uppercase text-gold mb-6 block"
+            >
               The Journey
             </span>
             <h2

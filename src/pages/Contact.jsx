@@ -161,7 +161,7 @@ export default function Contact() {
     <div ref={rootRef} className="bg-ivory min-h-screen text-charcoal flex flex-col justify-between pt-[14vh]">
       <div className="max-w-[1400px] mx-auto px-[6vw] w-full mb-24">
         {/* Page Header */}
-        <div className="mb-16 lg:mb-24">
+        <div className="mb-16 min-[990px]:mb-24">
           <span className="font-mono text-xs tracking-[0.28em] uppercase text-stone mb-4 block">
             Connect / Book Now
           </span>
@@ -173,7 +173,7 @@ export default function Contact() {
               <span className="reveal-line-inner block">Book Now</span>
             </span>
           </h1>
-          <p ref={introRef} className="max-w-[56ch] text-stone text-[15px] lg:text-[16px] leading-[1.8] mt-6 opacity-0">
+          <p ref={introRef} className="max-w-[56ch] text-stone text-[15px] min-[990px]:text-[16px] leading-[1.8] mt-6 opacity-0">
             Are you interested in featuring Dr. Awwad on your TV show, podcast, or as a
             guest speaker at your event? Do you need a hard-hitting article on a topic
             related to conflict zones? Use the form below to get in touch and tell us
@@ -181,9 +181,9 @@ export default function Contact() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-x-16 lg:gap-x-20 gap-y-10 items-stretch">
+        <div className="grid grid-cols-1 min-[990px]:grid-cols-[1.1fr_0.9fr] gap-x-16 min-[990px]:gap-x-20 gap-y-10 items-stretch">
           {/* LEFT — Form */}
-          <div className="lg:col-start-1 lg:row-start-1 lg:row-end-3 order-2 lg:order-1 space-y-16">
+          <div className="min-[990px]:col-start-1 min-[990px]:row-start-1 min-[990px]:row-end-3 order-2 min-[990px]:order-1 space-y-16">
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
               {/* Name — split first/last */}
               <div>
@@ -391,10 +391,10 @@ export default function Contact() {
               its total height matches the form exactly. justify-between
               then pins the image to the top and the info card to the
               bottom, flush with the Send button. */}
-          <div className="contents lg:flex lg:flex-col lg:h-full lg:justify-between lg:col-start-2 lg:row-start-1 lg:row-end-3">
+          <div className="contents min-[990px]:flex min-[990px]:flex-col min-[990px]:h-full min-[990px]:justify-between min-[990px]:col-start-2 min-[990px]:row-start-1 min-[990px]:row-end-3">
             <div
               ref={imageRef}
-              className="order-1 lg:order-none relative w-full aspect-[2/3] lg:aspect-[3/4] overflow-hidden rounded-[24px] opacity-0 will-change-transform"
+              className="order-1 min-[990px]:order-none relative w-full aspect-[2/3] min-[990px]:aspect-[3/4] overflow-hidden rounded-[24px] opacity-0 will-change-transform"
             >
               <img
                 src={contactImage}
@@ -406,7 +406,7 @@ export default function Contact() {
 
             <div
               ref={infoCardRef}
-              className="order-3 lg:order-none bg-charcoal/5 rounded-2xl border border-charcoal/5 p-8 lg:p-10 space-y-8 opacity-0"
+              className="order-3 min-[990px]:order-none bg-charcoal/5 rounded-2xl border border-charcoal/5 p-8 min-[990px]:p-10 space-y-8 opacity-0"
             >
               <div>
                 <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold block mb-2">
@@ -414,7 +414,7 @@ export default function Contact() {
                 </span>
                 <a
                   href="mailto:info@drwaielawwad.com"
-                  className="font-display text-xl lg:text-2xl hover:text-gold transition-colors duration-300"
+                  className="font-display text-xl min-[990px]:text-2xl hover:text-gold transition-colors duration-300"
                 >
                   info@drwaielawwad.com
                 </a>
@@ -424,7 +424,7 @@ export default function Contact() {
                 <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold block mb-2">
                   Press Sovereignty Office
                 </span>
-                <p className="font-display text-lg lg:text-xl leading-relaxed text-charcoal/80">
+                <p className="font-display text-lg min-[990px]:text-xl leading-relaxed text-charcoal/80">
                   New Delhi, India
                 </p>
               </div>
@@ -437,7 +437,7 @@ export default function Contact() {
                   href="https://www.linkedin.com/in/dr-waiel-awwad-1a793b7/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-display text-lg lg:text-xl underline hover:text-gold transition-colors duration-300"
+                  className="font-display text-lg min-[990px]:text-xl underline hover:text-gold transition-colors duration-300"
                 >
                   LinkedIn Profile
                 </a>

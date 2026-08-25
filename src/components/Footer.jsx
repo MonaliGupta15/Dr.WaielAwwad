@@ -40,17 +40,19 @@ export default function Footer() {
     const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (mql.matches) return;
 
+    let active = true;
     let ctx;
 
-    document.fonts.ready.then(() => {
-      if (!footerRef.current) return;
+    const initGSAP = () => {
+      // Revert previous GSAP context to reset inline transform styles before measurement
+      if (ctx) ctx.revert();
+      if (!active || !footerRef.current) return;
 
       ctx = gsap.context(() => {
-        const isSmall = window.innerWidth < 1024;
+        const zoom = parseFloat(document.documentElement.style.zoom) || 1;
+        const layoutWidth = window.innerWidth / zoom;
 
-        /* ---------------------------------------------------------
-           ENTRANCE REVEALS — unchanged
-        --------------------------------------------------------- */
+        // Entrance reveals
         rulesRef.current.forEach((rule, index) => {
           gsap.fromTo(
             rule,
@@ -78,50 +80,19 @@ export default function Footer() {
           }
         );
 
-        const zoom = parseFloat(document.documentElement.style.zoom) || 1;
-        const layoutWidth = window.innerWidth / zoom;
-
-        // Measure exactly where "THE" sits (its natural, untransformed
-        // position — before its own slide-in animation runs) and how far
-        // left of that the portrait's resting box currently starts. That
-        // delta is the pixel-exact distance to pull the portrait so it
-        // begins flush with "THE", regardless of viewport width or font
-        // metrics — no guessed vw offsets. An extra push (EXTRA_LEFT_PUSH)
-        // is added on top so the head starts visibly further left than
-        // THE itself, not just flush with it — bump this up/down to taste.
-        const EXTRA_LEFT_PUSH = layoutWidth * 0.12;
-        const portraitStartX = -layoutWidth;
-
-        // Staircase alignment, done by direct position measurement rather
-        // than summing letter widths (which drifts under negative tracking
-        // and kerning). For each pair we measure the TARGET letter's real
-        // on-screen left edge and the MOVING letter's real on-screen left
-        // edge, in their natural pre-transform layout, and the difference
-        // is the exact px shift that line needs to land precisely.
+        // Staircase alignment, done by direct position measurement
         const theFinalX = layoutWidth * 0.015; // THE's own resting offset
 
-        // STORY: shift so "S" lands under THE's "H" (which itself will
-        // sit theFinalX further right than it does right now)
+        // STORY: shift so "S" lands under THE's "H"
         const theH_naturalLeft = theSecondLetterRef.current.getBoundingClientRect().left / zoom;
         const storyS_naturalLeft = storyFirstLetterRef.current.getBoundingClientRect().left / zoom;
         const storyFinalX = (theH_naturalLeft + theFinalX) - storyS_naturalLeft;
 
-        // CONTINUES: shift so "C" lands under STORY's "T" (which itself
-        // will sit storyFinalX further right than it does right now)
+        // CONTINUES: shift so "C" lands under STORY's "T"
         const storyT_naturalLeft = storySecondLetterRef.current.getBoundingClientRect().left / zoom;
         const continuesC_naturalLeft = continuesFirstLetterRef.current.getBoundingClientRect().left / zoom;
         const continuesFinalX = (storyT_naturalLeft + storyFinalX) - continuesC_naturalLeft;
 
-        /* ---------------------------------------------------------
-           CONVERGENCE TIMELINE — starts the instant the footer begins
-           entering the viewport ('top bottom'), so nothing sits empty
-           waiting for a pin to kick in. The slowness instead comes from
-           stretching the trigger across the footer's ENTIRE scroll-through
-           span, all the way to 'bottom center' — roughly double the
-           distance of just its entrance — using scroll distance that's
-           already naturally there (no pin/spacer needed, no risk of
-           running out of room since it's the last section on the page).
-        --------------------------------------------------------- */
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: footerRef.current,
@@ -131,10 +102,10 @@ export default function Footer() {
           },
         });
 
+        const portraitStartX = -layoutWidth;
+
         // Portrait: starts at THE's exact position, fully transparent,
         // then glides out to its resting spot on the right at 0.72 opacity.
-        // sine.inOut eases the interpolation itself, so even though scroll
-        // position drives it, the motion doesn't feel linear/mechanical.
         tl.fromTo(
           portraitRef.current,
           { x: portraitStartX, opacity: 0 },
@@ -142,10 +113,12 @@ export default function Footer() {
           0
         );
 
+        const textStartX = -Math.min(layoutWidth * 0.4, 280);
+
         // THE line: emerges from the left and follows the portrait
         tl.fromTo(
           lineTheRef.current,
-          { x: -layoutWidth * 0.5, opacity: 0 },
+          { x: textStartX, opacity: 0 },
           { x: theFinalX, opacity: 1, ease: 'sine.inOut', duration: 0.9 },
           0.1
         );
@@ -153,7 +126,7 @@ export default function Footer() {
         // STORY line: "S" lands directly under THE's "H"
         tl.fromTo(
           lineStoryRef.current,
-          { x: -layoutWidth * 0.5, opacity: 0 },
+          { x: textStartX, opacity: 0 },
           { x: storyFinalX, opacity: 1, ease: 'sine.inOut', duration: 0.82 },
           0.18
         );
@@ -161,22 +134,36 @@ export default function Footer() {
         // CONTINUES line: "C" lands directly under STORY's "T"
         tl.fromTo(
           lineContinuesRef.current,
-          { x: -layoutWidth * 0.5, opacity: 0 },
+          { x: textStartX, opacity: 0 },
           { x: continuesFinalX, opacity: 1, ease: 'sine.inOut', duration: 0.75 },
           0.25
         );
 
-        // Slow editorial ticker — unchanged
+        // Slow editorial ticker
         gsap.to(tickerRef.current, {
           xPercent: -50,
           duration: 28,
           ease: 'none',
           repeat: -1,
         });
+
+        // Force ScrollTrigger to refresh markers with new coordinates
+        ScrollTrigger.refresh();
       }, footerRef);
+    };
+
+    document.fonts.ready.then(() => {
+      initGSAP();
     });
 
+    const handleResize = () => {
+      initGSAP();
+    };
+    window.addEventListener('resize', handleResize);
+
     return () => {
+      active = false;
+      window.removeEventListener('resize', handleResize);
       if (ctx) ctx.revert();
     };
   }, []);
@@ -202,9 +189,9 @@ export default function Footer() {
           any scroll position. */}
       <div
         ref={portraitRef}
-        className="absolute z-10
-          inset-y-0 right-[-3.5vw]
-          w-[55vw] md:w-[63vw]
+        className="absolute z-[2]
+          top-[22vh] right-[-15vw]
+          h-[30vh] w-auto md:inset-y-0 md:top-0 md:right-[-3.5vw] md:portrait:right-[-12vw] md:w-[63vw] md:h-auto
           max-w-none
           pointer-events-none
           will-change-transform"
@@ -212,12 +199,12 @@ export default function Footer() {
         <img
           src={heroImage}
           alt=""
-          className="h-full w-full object-cover object-right-top grayscale"
+          className="h-full w-auto md:w-full object-contain object-right md:object-right-bottom md:portrait:object-right grayscale"
         />
       </div>
 
       {/* Editorial ticker */}
-      <div className="absolute top-[9%] left-0 w-full overflow-hidden z-10">
+      <div className="absolute top-[6vh] md:top-[9%] left-0 w-full overflow-hidden z-10">
         <div ref={tickerRef} className="flex w-max whitespace-nowrap">
           {[...headlines, ...headlines].map((item, index) => (
             <div key={`${item}-${index}`} className="flex items-center">
@@ -231,7 +218,7 @@ export default function Footer() {
       </div>
 
       {/* Main editorial composition */}
-      <div className="relative min-h-screen px-[6vw] pt-[18vh] pb-12 flex flex-col justify-between">
+      <div className="relative min-h-screen px-[6vw] pt-[12vh] md:pt-[18vh] pb-12 flex flex-col justify-between">
         <div className="font-mono text-[9px] md:text-[11px] tracking-[0.28em] uppercase text-ivory/50">
           <span className="text-gold">ARCHIVE / 2026</span>
           <span className="mx-3">—</span>
@@ -239,15 +226,15 @@ export default function Footer() {
         </div>
 
         <div className="relative mt-[10vh] mb-[12vh]">
-          <div ref={titleRef} className="overflow-hidden relative z-0">
+          <div ref={titleRef} className="relative z-10 md:-translate-x-[2vw] md:portrait:-translate-x-[3vw]">
             <div className="font-display uppercase font-normal leading-[0.76] tracking-[-0.055em]">
-              <div ref={lineTheRef} className="text-[clamp(52px,10vw,140px)] will-change-transform">
+              <div ref={lineTheRef} className="text-[clamp(32px,8vw,140px)] will-change-transform whitespace-nowrap">
                 <span ref={theFirstLetterRef} className="inline-block char-the">T</span>
                 <span ref={theSecondLetterRef} className="inline-block char-the">H</span>
                 <span className="inline-block char-the">E</span>
               </div>
 
-              <div ref={lineStoryRef} className="relative text-[clamp(52px,10vw,140px)] will-change-transform">
+              <div ref={lineStoryRef} className="relative text-[clamp(32px,8vw,140px)] will-change-transform whitespace-nowrap">
                 <span ref={storyFirstLetterRef} className="inline-block char-story">S</span>
                 <span ref={storySecondLetterRef} className="inline-block char-story">T</span>
                 <span className="inline-block char-story">O</span>
@@ -256,7 +243,7 @@ export default function Footer() {
                 <span className="text-gold italic inline-block char-story">.</span>
               </div>
 
-              <div ref={lineContinuesRef} className="text-[clamp(52px,10vw,140px)] will-change-transform">
+              <div ref={lineContinuesRef} className="text-[clamp(32px,8vw,140px)] will-change-transform whitespace-nowrap">
                 <span ref={continuesFirstLetterRef} className="inline-block char-continues">C</span>
                 <span className="inline-block char-continues">O</span>
                 <span className="inline-block char-continues">N</span>
@@ -271,7 +258,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="absolute right-[1.5vw] bottom-[30px] max-w-[170px] z-20">
+          <div className="mt-24 max-w-[280px] md:mt-0 md:max-w-[170px] md:absolute md:right-[1.5vw] md:bottom-[-80px] md:portrait:bottom-[-220px] z-20">
             <div className="w-8 h-px bg-gold mb-4" />
             <p className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] leading-[1.8] text-ivory/55">
               A life documented through journalism,
@@ -281,7 +268,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="relative z-20 grid grid-cols-1 md:grid-cols-4 border-t border-ivory/15">
+        <div className="relative z-20 grid grid-cols-2 gap-x-[8vw] gap-y-2 md:grid-cols-4 md:gap-x-0 md:gap-y-0 border-t border-ivory/15">
           {[
             {
               label: 'Explore',
@@ -292,18 +279,18 @@ export default function Footer() {
               ]
             },
             {
+              label: 'Connect',
+              links: [
+                { label: 'Contact', href: '/contact' },
+                { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dr-waiel-awwad-1a793b7/', target: '_blank', rel: 'noopener noreferrer' },
+              ]
+            },
+            {
               label: 'Perspective',
               links: [
                 { label: 'Journalism', href: '#' },
                 { label: 'West Asia', href: '#' },
                 { label: 'Global Affairs', href: '#' },
-              ]
-            },
-            {
-              label: 'Connect',
-              links: [
-                { label: 'Contact', href: '/contact' },
-                { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dr-waiel-awwad-1a793b7/', target: '_blank', rel: 'noopener noreferrer' },
               ]
             },
             {
@@ -319,9 +306,9 @@ export default function Footer() {
               ref={(el) => {
                 if (el) rulesRef.current[index] = el;
               }}
-              className="relative py-7 md:py-9 md:px-6 first:md:pl-0 border-b md:border-b-0 border-ivory/10"
+              className={`relative py-5 md:py-9 md:px-6 first:md:pl-0 ${index < 2 ? 'border-b' : 'border-b-0'} md:border-b-0 border-ivory/10`}
             >
-              <div className="font-mono text-[9px] tracking-[0.25em] uppercase text-gold mb-5">
+              <div className="font-mono text-[9px] tracking-[0.25em] uppercase text-gold mb-3 md:mb-5">
                 {column.label}
               </div>
               <div className="space-y-2">
