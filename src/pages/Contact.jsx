@@ -159,7 +159,7 @@ export default function Contact() {
 
   return (
     <div ref={rootRef} className="bg-ivory min-h-screen text-charcoal flex flex-col justify-between pt-[14vh]">
-      <div className="max-w-[1400px] mx-auto px-[6vw] w-full mb-24">
+      <div className="max-w-[1400px] mx-auto self-center px-[6vw] w-full mb-24">
         {/* Page Header */}
         <div className="mb-16 min-[990px]:mb-24">
           <span className="font-mono text-xs tracking-[0.28em] uppercase text-stone mb-4 block">

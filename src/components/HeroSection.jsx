@@ -174,12 +174,13 @@ export default function HeroSection() {
         {/* Supporting label */}
         <div
           ref={labelRef}
-          className="absolute bottom-[5%] right-[6%] lg:bottom-[3.5%] lg:right-[8%] z-20 text-right will-change-transform"
+          className="absolute bottom-[7%] right-[4.5vw] lg:bottom-[7.5%] lg:right-[5vw] z-20 text-right will-change-transform"
+          style={{ textShadow: '0 1px 4px rgba(18, 20, 19, 0.8)' }}
         >
-          <span className="block font-mono text-[10px] lg:text-[11px] tracking-[0.24em] uppercase text-ivory/70">
+          <span className="block font-mono text-[10px] lg:text-[11px] tracking-[0.24em] uppercase text-ivory font-medium">
             Dr. Waiel Awwad
           </span>
-          <span className="block font-mono text-[10px] lg:text-[11px] tracking-[0.24em] uppercase text-gold/80 mt-1">
+          <span className="block font-mono text-[10px] lg:text-[11px] tracking-[0.24em] uppercase text-gold mt-1 font-medium">
             Leadership • Diplomacy • Service
           </span>
         </div>

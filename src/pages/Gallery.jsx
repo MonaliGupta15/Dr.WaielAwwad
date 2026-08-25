@@ -118,7 +118,7 @@ export default function Gallery() {
 
   return (
     <div className="bg-[#dce4e0] min-h-screen text-charcoal flex flex-col justify-between pt-[14vh]">
-      <div className="max-w-[1400px] mx-auto px-[6vw] w-full mb-24">
+      <div className="max-w-[1400px] mx-auto self-center px-[6vw] w-full mb-24">
         {/* Page Header */}
         <div className="mb-12 lg:mb-16">
           <span className="font-mono text-xs tracking-[0.28em] uppercase text-stone mb-4 block">

@@ -218,7 +218,7 @@ export default function Footer() {
       </div>
 
       {/* Main editorial composition */}
-      <div className="relative min-h-screen px-[6vw] pt-[12vh] md:pt-[18vh] pb-12 flex flex-col justify-between">
+      <div className="relative z-[3] min-h-screen px-[6vw] pt-[12vh] md:pt-[18vh] pb-12 flex flex-col justify-between">
         <div className="font-mono text-[9px] md:text-[11px] tracking-[0.28em] uppercase text-ivory/50">
           <span className="text-gold">ARCHIVE / 2026</span>
           <span className="mx-3">—</span>

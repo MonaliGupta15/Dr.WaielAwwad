@@ -168,9 +168,11 @@ html.lenis, html.lenis body {
   width: 100% !important;
 }
 
-/* Force html element to ignore CSS zoom to prevent viewport white stripes */
-html {
-  zoom: 1 !important;
+/* Ensure full-bleed layout width without right-side gaps */
+html, body, #root {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
 }
 
 /* Globally override standard screen height utilities to scale with layout height */

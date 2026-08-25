@@ -140,7 +140,7 @@ const articles = [
 export default function Articles() {
   return (
     <div className="bg-ivory min-h-screen text-charcoal flex flex-col justify-between pt-[14vh]">
-      <div className="max-w-[1400px] mx-auto px-[6vw] w-full mb-24">
+      <div className="max-w-[1400px] mx-auto self-center px-[6vw] w-full mb-24">
         {/* Page Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 lg:mb-24 border-b border-charcoal/10 pb-12 lg:pb-16">
           <div className="max-w-[750px]">

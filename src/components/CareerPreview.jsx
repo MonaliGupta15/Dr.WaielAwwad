@@ -56,6 +56,7 @@ const CAREER_ROLES = [
 
 const CareerPreview = () => {
   const sectionRef = useRef(null);
+  const containerRef = useRef(null);
   const labelLineRef = useRef(null);
   const headingRef = useRef(null);
   const subCopyRef = useRef(null);
@@ -212,25 +213,25 @@ const CareerPreview = () => {
     const tl = gsap.timeline();
     imageTlRef.current = tl;
 
-    // Calculate vertical position of the hovered row relative to the section
-    if (sectionRef.current && rowRefs.current[index]) {
+    // Calculate vertical position of the hovered row relative to the container
+    if (containerRef.current && rowRefs.current[index]) {
       const zoom = parseFloat(document.documentElement.style.zoom) || 1;
-      const sectionRect = sectionRef.current.getBoundingClientRect();
+      const containerRect = containerRef.current.getBoundingClientRect();
       const rowRect = rowRefs.current[index].getBoundingClientRect();
       
-      const sectionHeight = sectionRect.height / zoom;
+      const containerHeight = containerRect.height / zoom;
       const rowTop = rowRect.top / zoom;
-      const sectionTop = sectionRect.top / zoom;
+      const containerTop = containerRect.top / zoom;
       const rowHeight = rowRect.height / zoom;
 
       const cardHeight = (imageWrapRef.current && imageWrapRef.current.offsetHeight) || 480;
-      const rowCenter = (rowTop - sectionTop) + (rowHeight / 2);
+      const rowCenter = (rowTop - containerTop) + (rowHeight / 2);
       
       let targetTop = rowCenter - (cardHeight / 2);
       
-      // Constrain within section padding limits so it never gets cut off
-      const minTop = 60;
-      const maxTop = sectionHeight - cardHeight - 60;
+      // Constrain within container limits so it never gets cut off
+      const minTop = 0;
+      const maxTop = containerHeight - cardHeight;
       
       const constrainedTop = Math.max(minTop, Math.min(targetTop, Math.max(minTop, maxTop)));
       setCardTop(constrainedTop);
@@ -272,14 +273,15 @@ const CareerPreview = () => {
       ref={sectionRef}
       className="relative min-h-screen overflow-hidden bg-charcoal px-[7vw] py-[10vh] text-ivory"
     >
-      {/* FLOATING CARD CONTAINER */}
-      <div
-        ref={imageWrapRef}
-        className={`pointer-events-none absolute right-[6vw] z-20 hidden w-[32vw] max-w-[480px] min-[990px]:block transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
-          activeRole !== null ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-        }`}
-        style={{ top: `${cardTop}px` }}
-      >
+      <div ref={containerRef} className="max-w-[1400px] mx-auto relative w-full h-full">
+        {/* FLOATING CARD CONTAINER */}
+        <div
+          ref={imageWrapRef}
+          className={`pointer-events-none absolute right-0 z-20 hidden w-[32vw] max-w-[440px] min-[990px]:block transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+            activeRole !== null ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`}
+          style={{ top: `${cardTop}px` }}
+        >
         <div className="group bg-[#161716] rounded-[20px] p-5 border border-gold/15 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col text-ivory">
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[16px] bg-charcoal flex items-center justify-center border border-white/[0.05]">
             {CAREER_ROLES.map((role, i) => (
@@ -473,6 +475,7 @@ const CareerPreview = () => {
             →
           </span>
         </Link>
+      </div>
       </div>
     </section>
   );
