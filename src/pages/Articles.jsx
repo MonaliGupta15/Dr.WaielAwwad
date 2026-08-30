@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import Footer from '../components/Footer';
 import img32 from '../assets/32.png';
 import img14 from '../assets/14.webp';
 import img11 from '../assets/11.jpeg';
 import profilePortrait from '../assets/Waiel S.H. Awwad.webp';
+import gsap from 'gsap';
 
 // Authentically scraped and downloaded lead article images
 import article1 from '../assets/article_1.jpg';
@@ -138,11 +139,90 @@ const articles = [
 ];
 
 export default function Articles() {
+  const imageWrapRef = useRef(null);
+  const imageTiltRef = useRef(null);
+  const imageRef = useRef(null);
+  const shadowRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mql.matches) return;
+
+    const wrapEl = imageWrapRef.current;
+    const tiltEl = imageTiltRef.current;
+    const imgEl = imageRef.current;
+    const shadowEl = shadowRef.current;
+
+    if (!wrapEl || !tiltEl || !imgEl || !shadowEl) return;
+
+    const handleMouseMove = (e) => {
+      const rect = wrapEl.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      const mouseX = e.clientX - rect.left - width / 2;
+      const mouseY = e.clientY - rect.top - height / 2;
+
+      // Calculate rotation
+      const rX = -(mouseY / height) * 10; // max 10 deg tilt for aspect-[4/3]
+      const rY = (mouseX / width) * 10;
+
+      gsap.to(tiltEl, {
+        rotateX: rX,
+        rotateY: rY,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+      gsap.to(imgEl, {
+        x: -rY * 0.6,
+        y: rX * 0.6,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+      gsap.to(shadowEl, {
+        x: -rY * 1.2,
+        y: 16 - rX * 1.2,
+        opacity: 0.4,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(tiltEl, {
+        rotateX: 0,
+        rotateY: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+      });
+      gsap.to(imgEl, {
+        x: 0,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+      });
+      gsap.to(shadowEl, {
+        x: 0,
+        y: 16,
+        opacity: 0.25,
+        duration: 0.8,
+        ease: 'power2.out',
+      });
+    };
+
+    wrapEl.addEventListener('mousemove', handleMouseMove);
+    wrapEl.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      wrapEl.removeEventListener('mousemove', handleMouseMove);
+      wrapEl.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
+
   return (
     <div className="bg-ivory min-h-screen text-charcoal flex flex-col justify-between pt-[14vh]">
       <div className="max-w-[1400px] mx-auto self-center px-[6vw] w-full mb-24">
         {/* Page Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-8 mb-16 lg:mb-24 border-b border-charcoal/10 pb-12 lg:pb-16">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-8 mb-5 lg:mb-7 border-b border-[#E2E1DD] pb-8 lg:pb-10">
           <div className="max-w-[750px]">
             <span className="font-mono text-xs tracking-[0.28em] uppercase text-stone mb-4 block">
               Archive / Writings
@@ -150,31 +230,56 @@ export default function Articles() {
             <h1 className="font-display font-normal text-[clamp(42px,7vw,110px)] leading-[0.9] tracking-[-0.03em] uppercase font-serif">
               Articles & Columns
             </h1>
-            <p className="max-w-[52ch] text-stone text-[15px] lg:text-[16px] leading-[1.8] mt-6">
+            <div className="w-16 h-[3px] bg-gold/70 my-6" />
+            <p className="max-w-[52ch] text-stone text-[15px] lg:text-[16px] leading-[1.8]">
               A comprehensive archive of columns, strategic studies, and editorial essays published in leading 
               foreign policy journals and global newspapers.
             </p>
           </div>
           {/* Portrait Image on the Top Right */}
-          <div className="relative w-full max-w-[280px] md:w-[220px] lg:w-[260px] shrink-0 self-center md:self-start md:mt-12 lg:mt-16">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-charcoal/15 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.12)]">
-              <img 
-                src={profilePortrait} 
-                alt="Dr. Waiel Awwad Portrait" 
-                className="w-full h-full object-cover"
+          <div className="relative w-full max-w-[440px] md:w-[320px] lg:w-[380px] xl:w-[440px] shrink-0 self-center md:self-start md:mt-6 lg:mt-9">
+            <div 
+              ref={imageWrapRef} 
+              className="relative w-full"
+              style={{ perspective: '1000px' }}
+            >
+              {/* Ambient shadow */}
+              <div
+                ref={shadowRef}
+                className="absolute inset-0 translate-y-4 rounded-2xl bg-charcoal/20 blur-2xl will-change-transform opacity-75"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-charcoal/15 via-transparent to-transparent" />
+
+              {/* Aspect box that tilts */}
+              <div 
+                ref={imageTiltRef}
+                className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[#E2E1DD] shadow-[0_15px_30px_-10px_rgba(0,0,0,0.12)] will-change-transform"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <img 
+                  ref={imageRef}
+                  src={profilePortrait} 
+                  alt="Dr. Waiel Awwad Portrait" 
+                  className="w-full h-full object-cover object-top scale-105 will-change-transform"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-charcoal/15 via-transparent to-transparent" />
+              </div>
             </div>
-            {/* Elegant corner accents */}
-            <div className="pointer-events-none absolute -left-1 -top-1 h-4 w-4 border-l border-t border-gold/60" />
-            <div className="pointer-events-none absolute -right-1 -bottom-1 h-4 w-4 border-r border-b border-gold/60" />
+            {/* Elegant corner accent */}
+            <div className="pointer-events-none absolute -left-4 -top-4 h-16 w-16 border-l border-t border-gold/60" />
           </div>
         </div>
 
         {/* Articles List */}
         <div className="space-y-12 lg:space-y-16">
           {articles.map((article, index) => (
-            <div key={index} className="group border-t border-charcoal/10 pt-8 lg:pt-10 flex flex-col md:flex-row gap-6 lg:gap-10 items-start">
+            <div 
+              key={index} 
+              className={`group flex flex-col md:flex-row gap-6 lg:gap-10 items-start ${
+                index === 0 
+                  ? 'pt-0' 
+                  : 'border-t border-[#E2E1DD] pt-8 lg:pt-10'
+              }`}
+            >
               {/* Article Image */}
               <div className="relative w-full md:w-[180px] lg:w-[220px] aspect-[4/3] md:aspect-square lg:aspect-[4/3] overflow-hidden rounded-xl bg-stone-light/10 border border-charcoal/5 shrink-0">
                 <img 
@@ -229,7 +334,7 @@ export default function Articles() {
                       Read Link →
                     </a>
                   ) : (
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone-gray/80 border border-charcoal/10 rounded-full px-4 py-1.5 whitespace-nowrap font-medium">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone-gray/80 border border-[#E2E1DD] rounded-full px-4 py-1.5 whitespace-nowrap font-medium">
                       {article.readTime}
                     </span>
                   )}
