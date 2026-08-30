@@ -23,6 +23,9 @@ const PageFallback = () => (
 
 const App = () => {
   useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
     const handleScale = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
@@ -31,7 +34,7 @@ const App = () => {
       const rootEl = document.getElementById('root');
 
       let scale = 1;
-      if (width >= 1200 && width < referenceWidth) {
+      if (width >= 1024 && width < referenceWidth) {
         scale = width / referenceWidth;
         document.documentElement.style.zoom = '1';
         document.documentElement.style.setProperty('--zoom-scale', scale);

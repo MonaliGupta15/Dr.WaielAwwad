@@ -153,10 +153,10 @@ export default function HeroSection() {
             ref={wordWaielRef}
             className="absolute top-[48%] left-[3.5%] lg:top-[25%] lg:left-[5%] portrait:top-[48%] portrait:left-[3.5%] will-change-transform"
           >
-            <span className="block font-display italic font-light text-[clamp(20px,2.4vw,38px)] text-ivory/90 mb-1 lg:mb-2 pl-[6%] lg:pl-[1%]">
+            <span className="block font-display italic font-light hero-prefix text-ivory/90 mb-1 lg:mb-2 pl-[6%] lg:pl-[1%]">
               Dr.
             </span>
-            <h1 className="font-display font-normal text-[clamp(60px,12vw,120px)] lg:text-[clamp(72px,17vw,260px)] leading-[0.8] tracking-[-0.015em] text-ivory whitespace-nowrap">
+            <h1 className="font-display font-normal hero-heading leading-[0.8] tracking-[-0.015em] text-ivory whitespace-nowrap">
               WAIEL
             </h1>
           </div>
@@ -165,7 +165,7 @@ export default function HeroSection() {
             ref={wordAwwadRef}
             className="absolute top-[calc(48%+clamp(105px,17.5vw,240px))] left-[12%] lg:top-auto lg:bottom-[12%] lg:left-[24%] portrait:top-[calc(48%+clamp(105px,17.5vw,240px))] portrait:bottom-auto portrait:left-[12%] will-change-transform"
           >
-            <h1 className="font-display italic font-light text-[clamp(60px,12vw,120px)] lg:text-[clamp(72px,17vw,260px)] leading-[0.8] tracking-[-0.015em] text-gold whitespace-nowrap">
+            <h1 className="font-display italic font-light hero-heading leading-[0.8] tracking-[-0.015em] text-gold whitespace-nowrap">
               AWWAD
             </h1>
           </div>

@@ -153,19 +153,21 @@ html.lenis, html.lenis body {
 
 /* Aspect ratio-locked dynamic full-screen classes */
 .section-h-screen {
-  height: var(--section-height, 100vh);
+  height: var(--section-height, 100vh) !important;
 }
 .section-min-h-screen {
-  min-height: var(--section-height, 100vh);
+  min-height: var(--section-height, 100vh) !important;
 }
 
-/* Fix GSAP ScrollTrigger pin spacer double-scaling of widths under CSS zoom */
+/* Fix GSAP ScrollTrigger pin spacer double-scaling of dimensions under CSS zoom */
 .pin-spacer {
   width: 100% !important;
+  height: var(--section-height, 100vh) !important;
 }
 .pin-spacer > div,
 .pin-spacer > section {
   width: 100% !important;
+  height: var(--section-height, 100vh) !important;
 }
 
 /* Ensure full-bleed layout width without right-side gaps */
