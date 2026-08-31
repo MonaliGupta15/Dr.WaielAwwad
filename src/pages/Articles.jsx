@@ -219,7 +219,7 @@ export default function Articles() {
   }, []);
 
   return (
-    <div className="bg-ivory min-h-screen text-charcoal flex flex-col justify-between pt-[14vh]">
+    <div className="bg-ivory min-h-screen text-charcoal flex flex-col justify-between pt-[22vh] min-[990px]:pt-[24vh]">
       <div className="max-w-[1400px] mx-auto self-center px-[6vw] w-full mb-24">
         {/* Page Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-8 mb-5 lg:mb-7 border-b border-[#E2E1DD] pb-8 lg:pb-10">

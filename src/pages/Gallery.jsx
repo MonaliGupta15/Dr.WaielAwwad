@@ -117,7 +117,7 @@ export default function Gallery() {
   }, [activeTab]); // Rebind Fancybox when activeTab changes
 
   return (
-    <div className="bg-[#dce4e0] min-h-screen text-charcoal flex flex-col justify-between pt-[14vh]">
+    <div className="bg-[#dce4e0] min-h-screen text-charcoal flex flex-col justify-between pt-[22vh] min-[990px]:pt-[24vh]">
       <div className="max-w-[1400px] mx-auto self-center px-[6vw] w-full mb-24">
         {/* Page Header */}
         <div className="mb-12 lg:mb-16">

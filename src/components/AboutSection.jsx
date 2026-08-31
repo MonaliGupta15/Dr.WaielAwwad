@@ -96,7 +96,6 @@ export default function AboutSection() {
 
   const chapterImageRefs = useRef([]);
   const chapterTextRefs = useRef([]);
-  const [imageMetrics, setImageMetrics] = useState(null);
   
   const introPortalRef = useRef(null);
   const introBracketRef = useRef(null);
@@ -112,59 +111,8 @@ export default function AboutSection() {
     setReduceMotion(mql.matches);
   }, []);
 
-  // 1. Measure image positions dynamically for circular transitions
   useLayoutEffect(() => {
     if (reduceMotion) return;
-
-    const measure = () => {
-      const imgEl = chapterImageRefs.current[0];
-      const portalEl = chapterContentRefs.current[0];
-      if (imgEl && portalEl && pinRef.current) {
-        // Temporarily reset portal styling to measure un-transformed coordinates
-        const originalStyle = portalEl.style.cssText;
-        portalEl.style.transform = 'none';
-        portalEl.style.webkitTransform = 'none';
-
-        const zoom = parseFloat(document.documentElement.style.zoom) || 1;
-        const rect = imgEl.getBoundingClientRect();
-        const parentRect = pinRef.current.getBoundingClientRect();
-
-        const rectLeft = rect.left / zoom;
-        const rectTop = rect.top / zoom;
-        const rectWidth = rect.width / zoom;
-        const rectHeight = rect.height / zoom;
-
-        const parentRectLeft = parentRect.left / zoom;
-        const parentRectTop = parentRect.top / zoom;
-        const parentRectWidth = parentRect.width / zoom;
-        const parentRectHeight = parentRect.height / zoom;
-
-        const cx = rectLeft - parentRectLeft + rectWidth / 2;
-        const cy = rectTop - parentRectTop + rectHeight / 2;
-        const r = Math.min(rectWidth, rectHeight) / 2;
-        const rCover = Math.hypot(rectWidth / 2, rectHeight / 2);
-
-        const vw = parentRectWidth;
-        const vh = parentRectHeight;
-        const maxR = Math.hypot(vw / 2, vh / 2); // Center of viewport
-
-        // Restore original styling
-        portalEl.style.cssText = originalStyle;
-
-        setImageMetrics({ cx, cy, r, rCover, maxR });
-      }
-    };
-
-    const timer = setTimeout(measure, 150);
-    window.addEventListener('resize', measure);
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', measure);
-    };
-  }, [reduceMotion]);
-
-  useLayoutEffect(() => {
-    if (reduceMotion || !imageMetrics) return;
 
     // Dynamically calculate labels to repeat around each ring path
     for (let i = 0; i < 7; i++) {
@@ -178,7 +126,7 @@ export default function AboutSection() {
     }
 
     const isSmall = window.innerWidth < 1024;
-    const scrollLength = isSmall ? '900%' : '1400%';
+    const scrollLength = isSmall ? '1800%' : '2800%';
 
     const ctx = gsap.context(() => {
       const stageWidth = 1 / 9; // 9 active stages for clean, responsive scroll timing
@@ -189,7 +137,7 @@ export default function AboutSection() {
           trigger: pinRef.current,
           start: 'top top',
           end: `+=${scrollLength}`,
-          scrub: 1.0,
+          scrub: 1.2,
           pin: true,
           anticipatePin: 1,
           onUpdate: (self) => {
@@ -497,7 +445,7 @@ export default function AboutSection() {
     }, rootRef);
 
     return () => ctx.revert();
-  }, [reduceMotion, imageMetrics]);
+  }, [reduceMotion]);
 
   if (reduceMotion) {
     return (

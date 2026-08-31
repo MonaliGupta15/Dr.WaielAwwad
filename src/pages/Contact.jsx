@@ -158,7 +158,7 @@ export default function Contact() {
     'bg-transparent border-none outline-none font-display text-lg text-charcoal placeholder-stone-gray/70 w-full';
 
   return (
-    <div ref={rootRef} className="bg-ivory min-h-screen text-charcoal flex flex-col justify-between pt-[14vh]">
+    <div ref={rootRef} className="bg-ivory min-h-screen text-charcoal flex flex-col justify-between pt-[22vh] min-[990px]:pt-[24vh]">
       <div className="max-w-[1400px] mx-auto self-center px-[6vw] w-full mb-24">
         {/* Page Header */}
         <div className="mb-16 min-[990px]:mb-24">

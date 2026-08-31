@@ -257,9 +257,9 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="mt-28 max-w-[280px] md:mt-0 md:max-w-[170px] md:absolute md:right-[18vw] lg:right-[1.5vw] md:bottom-[-130px] md:portrait:bottom-[-270px] z-20">
+          <div className="mt-28 max-w-[280px] md:mt-0 md:max-w-[180px] md:absolute md:right-[-3.5vw] lg:right-[-5vw] xl:right-[-4.5vw] md:bottom-[-120px] md:portrait:bottom-[-240px] z-20">
             <div className="w-8 h-px bg-gold mb-4" />
-            <p className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] leading-[1.8] text-ivory/55">
+            <p className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] leading-[1.8] text-ivory/60">
               A life documented through journalism,
               public service and a lifelong engagement
               with the region.
