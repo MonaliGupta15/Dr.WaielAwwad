@@ -49,8 +49,7 @@ export default function Footer() {
       if (!active || !footerRef.current) return;
 
       ctx = gsap.context(() => {
-        const zoom = parseFloat(document.documentElement.style.zoom) || 1;
-        const layoutWidth = window.innerWidth / zoom;
+        const layoutWidth = window.innerWidth;
 
         // Entrance reveals
         rulesRef.current.forEach((rule, index) => {
@@ -84,13 +83,13 @@ export default function Footer() {
         const theFinalX = layoutWidth * 0.015; // THE's own resting offset
 
         // STORY: shift so "S" lands under THE's "H"
-        const theH_naturalLeft = theSecondLetterRef.current.getBoundingClientRect().left / zoom;
-        const storyS_naturalLeft = storyFirstLetterRef.current.getBoundingClientRect().left / zoom;
+        const theH_naturalLeft = theSecondLetterRef.current.getBoundingClientRect().left;
+        const storyS_naturalLeft = storyFirstLetterRef.current.getBoundingClientRect().left;
         const storyFinalX = (theH_naturalLeft + theFinalX) - storyS_naturalLeft;
 
         // CONTINUES: shift so "C" lands under STORY's "T"
-        const storyT_naturalLeft = storySecondLetterRef.current.getBoundingClientRect().left / zoom;
-        const continuesC_naturalLeft = continuesFirstLetterRef.current.getBoundingClientRect().left / zoom;
+        const storyT_naturalLeft = storySecondLetterRef.current.getBoundingClientRect().left;
+        const continuesC_naturalLeft = continuesFirstLetterRef.current.getBoundingClientRect().left;
         const continuesFinalX = (storyT_naturalLeft + storyFinalX) - continuesC_naturalLeft;
 
         const tl = gsap.timeline({

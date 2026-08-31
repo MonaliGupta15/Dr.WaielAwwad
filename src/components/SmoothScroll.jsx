@@ -45,6 +45,11 @@ export default function SmoothScroll({ children }) {
   useEffect(() => {
     if (lenisRef.current) {
       lenisRef.current.scrollTo(0, { immediate: true });
+      // Fallback timeout to ensure scroll is exactly 0 after layout settles
+      const t = setTimeout(() => {
+        lenisRef.current?.scrollTo(0, { immediate: true });
+      }, 200);
+      return () => clearTimeout(t);
     }
   }, [location]);
 

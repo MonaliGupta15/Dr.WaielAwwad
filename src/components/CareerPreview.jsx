@@ -215,14 +215,13 @@ const CareerPreview = () => {
 
     // Calculate vertical position of the hovered row relative to the container
     if (containerRef.current && rowRefs.current[index]) {
-      const zoom = parseFloat(document.documentElement.style.zoom) || 1;
       const containerRect = containerRef.current.getBoundingClientRect();
       const rowRect = rowRefs.current[index].getBoundingClientRect();
       
-      const containerHeight = containerRect.height / zoom;
-      const rowTop = rowRect.top / zoom;
-      const containerTop = containerRect.top / zoom;
-      const rowHeight = rowRect.height / zoom;
+      const containerHeight = containerRect.height;
+      const rowTop = rowRect.top;
+      const containerTop = containerRect.top;
+      const rowHeight = rowRect.height;
 
       const cardHeight = (imageWrapRef.current && imageWrapRef.current.offsetHeight) || 480;
       const rowCenter = (rowTop - containerTop) + (rowHeight / 2);

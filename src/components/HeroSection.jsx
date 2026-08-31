@@ -109,7 +109,7 @@ export default function HeroSection() {
   }, [reduceMotion]);
 
   return (
-    <div ref={rootRef}>
+    <div ref={rootRef} className="w-full bg-navy-abyss relative">
       <section
         ref={viewportRef}
         className="relative w-full section-h-screen overflow-hidden bg-navy-abyss"
@@ -122,7 +122,7 @@ export default function HeroSection() {
           ref={portraitWrapRef}
           className="absolute inset-0 z-[2] flex items-end justify-end pointer-events-none will-change-transform"
         >
-          <div className="relative h-[88%] lg:h-[104%] portrait:h-[88%] mr-[-23vh] sm:mr-[-10vw] lg:mr-[4vw] md:portrait:mr-[-22vw]">
+          <div className="relative h-[88%] lg:h-[100%] portrait:h-[88%] mr-[-20vh] sm:mr-[-8vw] lg:mr-[2vw] xl:mr-[4vw] md:portrait:mr-[-20vw]">
             <img
               src={heroImage}
               alt="Dr. Waiel Awwad"

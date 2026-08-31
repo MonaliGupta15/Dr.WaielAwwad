@@ -151,37 +151,25 @@ html.lenis, html.lenis body {
   scrollbar-width: none;  /* Firefox */
 }
 
-/* Aspect ratio-locked dynamic full-screen classes */
+/* Full-screen responsive classes */
 .section-h-screen {
-  height: var(--section-height, 100vh) !important;
+  height: 100vh;
+  height: 100dvh;
 }
 .section-min-h-screen {
-  min-height: var(--section-height, 100vh) !important;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-/* Fix GSAP ScrollTrigger pin spacer double-scaling of dimensions under CSS zoom */
+/* Ensure pin spacer and root containers are full-bleed */
 .pin-spacer {
   width: 100% !important;
-  height: var(--section-height, 100vh) !important;
-}
-.pin-spacer > div,
-.pin-spacer > section {
-  width: 100% !important;
-  height: var(--section-height, 100vh) !important;
 }
 
-/* Ensure full-bleed layout width without right-side gaps */
-html, body {
+html, body, #root {
   width: 100%;
   max-width: 100%;
-}
-
-/* Globally override standard screen height utilities to scale with layout height */
-.min-h-screen {
-  min-height: var(--section-height, 100vh) !important;
-}
-.h-screen {
-  height: var(--section-height, 100vh) !important;
+  min-height: 100%;
 }
 
 /* Scale down Introduction Section on short mobile viewports */

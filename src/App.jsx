@@ -26,56 +26,14 @@ const App = () => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
-    const handleScale = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      const referenceWidth = 1440;
-
-      const rootEl = document.getElementById('root');
-
-      let scale = 1;
-      if (width >= 1024 && width < referenceWidth) {
-        scale = width / referenceWidth;
-        document.documentElement.style.zoom = '1';
-        document.documentElement.style.setProperty('--zoom-scale', scale);
-        if (rootEl) {
-          rootEl.style.zoom = scale;
-          rootEl.style.width = `${100 / scale}%`;
-        }
-      } else {
-        document.documentElement.style.zoom = '1';
-        document.documentElement.style.setProperty('--zoom-scale', '1');
-        if (rootEl) {
-          rootEl.style.zoom = '';
-          rootEl.style.width = '';
-        }
-      }
-
-      // Calculate layout height of the viewport
-      const layoutHeight = height / scale;
-
-      // Use the actual layout height of the viewport for section heights
-      let sectionHeightVal = `${layoutHeight}px`;
-
-      document.documentElement.style.setProperty('--section-height', sectionHeightVal);
-
-      // Tell GSAP ScrollTrigger to recalculate layout dimensions after zoom is applied
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 100);
+    const handleResize = () => {
+      // Refresh GSAP ScrollTrigger to ensure all markers and pins align with current viewport
+      ScrollTrigger.refresh();
     };
 
-    handleScale();
-    window.addEventListener('resize', handleScale);
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('resize', handleScale);
-      document.documentElement.style.zoom = '';
-      document.documentElement.style.removeProperty('--zoom-scale');
-      const rootEl = document.getElementById('root');
-      if (rootEl) {
-        rootEl.style.zoom = '';
-        rootEl.style.width = '';
-      }
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
